@@ -1,9 +1,11 @@
 <?php
+ob_start();
 require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
 require_once("inc/path.inc.php");
 require_once("inc/file.inc.php");
 require_once("inc/fehlerausgabe.inc.php");
+require_once("inc/acledit.inc.php");
 
 
 function printHeader($path)
@@ -19,6 +21,7 @@ function printHeader($path)
             <select name="cmd">
                 <option value="upload">Datei hochladen</option>
                 <option value="mkdir">Verzeichnis erstellen</option>
+                <option value="chacl">Verzeichnis-ACL bearbeiten</option>
                 <option value="delete">L&ouml;schen</option>
             </select>
             <input type="submit" value="Los" />
@@ -130,7 +133,7 @@ function listCurrentPath()
     $pathlist = new PathList;
     $pathlist->selectByParentId($path->path_id);
     for ($i = 0; $i < count($pathlist->list); $i++) {
-        $acl = $_SESSION["user"]->getACLByPath($pathlist->list[$i]->pathname);
+        $acl = @$_SESSION["user"]->getACLByPath($pathlist->list[$i]->pathname);
         if ($acl->read_path) {
             printDirectoryEntry($pathlist->list[$i], false);
         }
@@ -519,7 +522,6 @@ function doMkDir()
 
 }
 
-ob_start();
 $PageName = "Browser";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
@@ -528,13 +530,12 @@ $command = @$_REQUEST["cmd"];
 if ($command == "") $command = "ls";
 
 if ($command == "ls") {
+    if ( (!isset($_SESSION["path"])) || $_SESSION["path"] == "" ) {
+        $_SESSION["path"] = "/";
+    }
     if (isset($_REQUEST["path"])) {
         $_SESSION["path"] = @$_REQUEST["path"];
     }
-    if (!isset($_SESSION["path"])) {
-        $_SESSION["path"] = "/";
-    }
-
     listCurrentPath();
 } else if ($command == "upload") {
     printUploadFile();
@@ -550,6 +551,14 @@ if ($command == "ls") {
     printMkDir();
 } else if ($command == "domkdir") {
     doMkDir();
+}  else if ($command == "chacl") {
+    $path = $_POST["pathname"];
+    if ( (!is_array($path)) || (!isset($path[0])) || $path[0] == "" ) {
+        echo("Bitte w&auml;hlen Sie ein Verzeichnis aus, dessen ACL Sie editieren wollen");
+        listCurrentPath();
+    } else {
+        listACLsByPath($path[0]);
+    }
 } else {
     listCurrentPath();
 }

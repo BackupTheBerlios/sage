@@ -2,7 +2,7 @@ insert into sage_address_type (description) values ('Privat Adresse');
 insert into sage_address_type (description) values ('Geschäftliche Adresse');
 
 insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (1, '@root','','admin','group', '@root', NULL);
-insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (2, 'kf0fhomer','$1$nXrb36T2$kOXNi6itV4p8EpISmiFfB0','Homer','Simpson', 'Superuser...juhu!', 1);
+insert into sage_user (user_id, loginname,password,firstname,surname, description, is_su, user_id_parent) values (2, 'kf0fhomer','$1$nXrb36T2$kOXNi6itV4p8EpISmiFfB0','Homer','Simpson', 'Superuser...juhu!', '1', 1);
 insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (3, '@kf0f','','kf0f','group', '@kf0f', NULL);
 insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (4, 'kf0flisa','','Lisa','Simpson', '', 3);
 insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (5, 'kf0fmaggie','','Maggie','Simpson', '', 3);

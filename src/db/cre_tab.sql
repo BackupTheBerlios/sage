@@ -16,6 +16,7 @@ CREATE TABLE sage_user (
    description       VARCHAR(255),
    homepage          VARCHAR(40),
    e_mail            VARCHAR(40),
+   is_su             SET('0','1') NOT NULL DEFAULT '0',
    user_id_parent    INT  NULL,
    PRIMARY KEY (user_id),
    UNIQUE sage_user$loginname (loginname),

@@ -115,5 +115,26 @@ class ACLList {
 
         return true;
     }
+
+    function selectByPath($path)
+    {
+        $dbq = new DB;
+        $dbq->db_connect();
+
+        $query = "SELECT acl_id, user_id, sage_acl.path_id, delete_path, write_path, read_path,
+                  rename_path, delete_file, write_file, read_file, rename_file, sage_path.pathname
+                  FROM sage_acl, sage_path
+                  WHERE sage_acl.path_id = sage_path.path_id
+                  AND sage_path.pathname = '$path'";
+
+        $acls = $dbq->db_select($query);
+        for ($i = 0; $i < count($acls); $i++) {
+            $acl = new ACL;
+            $acl->initializeFromRow($acls[$i]);
+            $this->list[] = $acl;
+        }
+
+        return true;
+    }
 }
 ?>

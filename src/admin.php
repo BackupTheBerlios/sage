@@ -1,4 +1,5 @@
 <?php
+ob_start();
 /*Variablen Deklaration*/
 require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
@@ -11,12 +12,12 @@ function printSelection()
 
 <form name="adminselect" method="post" action="$me">
     <select name="cmd">
-        <option value="newuser">User einrichten</option>
-        <option value="edituser">User bearbeiten</option>
-        <option value="deluser">User l&ouml;schen</option>
-        <option value="newgroup">Gruppe einrichten</option>
-        <option value="editgroup">Gruppe bearbeiten</option>
-        <option value="delgroup">Gruppe l&ouml;schen</option>
+        <option value="useradd">User einrichten</option>
+        <option value="useredit">User bearbeiten</option>
+        <option value="userdel">User l&ouml;schen</option>
+        <option value="groupadd">Gruppe einrichten</option>
+        <option value="groupedit">Gruppe bearbeiten</option>
+        <option value="groupdel">Gruppe l&ouml;schen</option>
         <input type="submit" value="Los" />
     </select>
 </form>
@@ -78,6 +79,7 @@ function doNewUser()
 
 }
 
+
 $PageName="Administration";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
@@ -87,15 +89,15 @@ if ($command == "") $command = "select";
 
 if ($command == "select") {
     printSelection();
-} else if ($command == "newuser") {
-    printNewUser();
-} else if ($command == "newuser") {
-    doNewUser();
+} else if ($command == "useradd") {
+    redirectTo("useradd.php");
+} else if ($command == "groupadd") {
+    redirectTo("groupadd.php");
+} else {
+    echo("<font color=\"#ff0000\">Kommando unbekannt. Bitte neu w&auml;hlen.</font>");
+    printSelection();
 }
 
-?>
-
-
-<?php
 require("inc/footer.inc.php");
+ob_end_flush();
 ?>

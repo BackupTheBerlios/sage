@@ -53,14 +53,11 @@ function loggedIn()
 
 function doLogout()
 {
-    //unset($_SESSION["user"]);
+    session_start();
+    unset($_SESSION["user"]);
+    session_destroy();
     Header( "WWW-authenticate: Basic realm=\"Bitte Abbrechen druecken\"");
     Header( "HTTP/1.0 401 Unauthorized");
-    //session_start();
-    //unset($_SESSION["pass"]);
-    //session_destroy();
-    
-
 }
 
 function getFileExtension($filename)

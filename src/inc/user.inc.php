@@ -14,6 +14,7 @@ class User
     var $homepage       = "";
     var $e_mail         = "";
     var $user_id_parent = "";
+    var $is_su          = "0";
     var $acls           = 0;
 
     function User()
@@ -84,10 +85,26 @@ class User
 
     function getACLByPath($path)
     {
+        $retacl     = new ACL;
+
+        if ($this->is_su == "1") {
+            $retacl->acl_id = 1;
+            $retacl->delete_path = "1";
+            $retacl->write_path = "1";
+            $retacl->read_path = "1";
+            $retacl->rename_path = "1";
+            $retacl->delete_file = "1";
+            $retacl->write_file = "1";
+            $retacl->read_file = "1";
+            $retacl->rename_file = "1";
+
+            return $retacl;
+        }
+
         $done       = false;
         $acllist    = new ACLList;
         $curacls    = array();
-        $retacl     = new ACL;
+
 
         $currentUserId = $this->user_id;
 
@@ -121,5 +138,33 @@ class User
         return $acllist;
     }
 
+}
+
+class UserList {
+    var $list = 0;
+
+    function UserList()
+    {
+        $this->list = array();
+    }
+
+    function selectAll()
+    {
+        $dbq = new DB;
+        $dbq->db_connect();
+
+        $query = "SELECT user_id, loginname, password, firstname, surname, description, homepage, e_mail, user_id_parent
+                  FROM sage_user";
+
+        $users = $dbq->db_select($query);
+
+        for ($i = 0; $i < count($users); $i++) {
+            $user = new User;
+            $user->initializeFromRow($users[$i]);
+            $this->list[] = $user;
+        }
+
+        return true;
+    }
 }
 ?>

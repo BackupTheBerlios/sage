@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 require_once("inc/functions.inc.php");
 if (!loggedIn()) setupSession();
 require_once("inc/config.inc.php");
@@ -18,9 +20,9 @@ echo <<<EOF
 <h2>Benutzerprofil bearbeiten</h2>
 <form name="userprofile" method="post" action="$me">
     <input type="hidden" name="cmd" value="change" />
-    Altes Passwort:<br /><input type="password" name="oldpw" value="" /><br/>
-    Neues Passwort:<br /><input type="password" name="pw" value="" /><br/>
-    Passwort wiederholen:<br /><input type="password" name="pwcfrm" value="" /><br />
+    Altes Passwort:<br /><input type="password" name="oldpw" /><br/>
+    Neues Passwort:<br /><input type="password" name="pw" /><br/>
+    Passwort wiederholen:<br /><input type="password" name="pwcfrm" /><br />
     Vorname:<br /><input type="text" name="firstname" value="$user->firstname" /><br />
     Nachname:<br /><input type="text" name="surname" value="$user->surname" /><br />
     Homepage:<br /><input type="text" name="homepage" value="$user->homepage" /><br />
@@ -75,19 +77,137 @@ function changePassword($oldpw, $newpw, $newpwcfrm)
     return true;
 }
 
-function doChange()
+function changeFirstName($firstname)
 {
-    /*
-    if (!isset($_POST["password"]) || @$_POST["password"] == "") {
-        echo("Bitte geben Sie ein Passwort ein!<p />");
+    if ($firstname == $_SESSION["user"]->firstname) return true;
+    $uid = $_SESSION["user"]->user_id;
+
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "UPDATE sage_user
+              SET firstname = '$firstname'
+              WHERE user_id = $uid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte den Vornamen nicht updaten.");
         return false;
     }
-    */
-    if (isset($_POST["oldpw"]) || @$_POST["oldpw"] != "") {
+
+    return true;
+}
+
+function changeSurName($surname)
+{
+    if ($surname == $_SESSION["user"]->surname) return true;
+    $uid = $_SESSION["user"]->user_id;
+
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "UPDATE sage_user
+              SET surname = '$surname'
+              WHERE user_id = $uid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte den Nachnamen nicht updaten.");
+        return false;
+    }
+
+    return true;
+}
+
+function changeDescription($description)
+{
+    if ($description == $_SESSION["user"]->description) return true;
+    $uid = $_SESSION["user"]->user_id;
+
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "UPDATE sage_user
+              SET description = '$description'
+              WHERE user_id = $uid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte die Beschreibung nicht updaten.");
+        return false;
+    }
+
+    return true;
+}
+
+function changeHomepage($homepage)
+{
+    if ($homepage == $_SESSION["user"]->homepage) return true;
+    $uid = $_SESSION["user"]->user_id;
+
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "UPDATE sage_user
+              SET homepage = '$homepage'
+              WHERE user_id = $uid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte die Homepage-URL nicht updaten.");
+        return false;
+    }
+
+    return true;
+}
+
+function changeEMail($email)
+{
+    if ($email == $_SESSION["user"]->e_mail) return true;
+    $uid = $_SESSION["user"]->user_id;
+
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "UPDATE sage_user
+              SET e_mail = '$email'
+              WHERE user_id = $uid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte die E-Mail - Adresse nicht updaten.");
+        return false;
+    }
+
+    return true;
+}
+
+function doChange()
+{
+    $retval = true;
+    if (isset($_POST["oldpw"]) && @$_POST["oldpw"] != "") {
+        echo $_POST["oldpw"];
         if (!changePassword(@$_POST["oldpw"], @$_POST["pw"], @$_POST["pwcfrm"])) return false;
     }
 
+    if (!changeFirstName(@$_POST["firstname"])) $retval = false;
+    if (!changeSurName(@$_POST["surname"])) $retval = false;
+    if (!changeDescription(@$_POST["description"])) $retval = false;
+    if (!changeHomepage(@$_POST["homepage"])) $retval = false;
+    if (!changeEMail(@$_POST["e_mail"])) $retval = false;
 
+    $uid = $_SESSION["user"]->user_id;
+    if (!$_SESSION["user"]->selectByID($uid)) {
+        fehlerausgabe("Fehler beim Neuladen des Userprofils. Bitte melden Sie sich neu an");
+        die();
+    }
+
+    return $retval;
 }
 
 
@@ -98,11 +218,8 @@ if ($command == "show") {
     printProfileForm();
 } else if ($command == "change") {
     if (!doChange()) printProfileForm();
+    else redirectTo($_SERVER["PHP_SELF"]);
 }
-
-?>
-
-
-<?php
 require("inc/footer.inc.php");
+ob_end_flush();
 ?>
