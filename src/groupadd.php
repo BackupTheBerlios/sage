@@ -45,13 +45,53 @@ if ($err == 0) {
                 fwrite($f_htaccess,"AuthUserFile ".$htpasswd."\n");
                 fwrite($f_htaccess,"AuthGroupFile ".$htgroup."\n");
                 fwrite($f_htaccess,"require group ".$groupname."\n");
-                fclose($f_htaccess);
-                echo "Gruppe angelegt.";
+                fclose($f_htaccess);                
+                $group = new User;
+                $group->loginname="@".$groupname;
+                $group->user_id_parent="";
+                if ($group->insert()) {
+                    $rootpath = new Path;
+                    $rootpath->selectByName("/");
+                    $path = new Path;
+                    $path->pathname=$groupname;
+                    $path->loginname="@".$groupname;
+                    $path->path_id_parent=$rootpath->path_id;
+                    if ($path->insert()) {
+                        $acl = new ACL;
+                        $acl->user_id=$group->user_id;
+                        $acl->path_id=$path->path_id;
+                        $acl->$delete_path = 1;  // ACL fuer Gruppenordner
+                        $acl->$write_path  = 1;  //  => alles auf 1
+                        $acl->$read_path   = 1;
+                        $acl->$rename_path = 1;
+                        $acl->$delete_file = 1;
+                        $acl->$write_file  = 1;
+                        $acl->$read_file   = 1;
+                        $acl->$rename_file = 1;
+                        $modpath = new Path;
+                        $modacl = new ACL;
+                        $modacl->user_id=$group->user_id;
+                        foreach (array("BROWSER", "CALENDAR", "HILFE", "MAIL") as $modulename) {
+                            $modpath->selectByName($modulename);
+                            $modacl->path_id=$modpath->path_id;
+                            $modacl->delete_path=1;
+                            if ($modacl->insert()) {
+                                echo "Gruppe angelegt.";
+                            } else {
+                                echo "Fehler bei Modul ".$modulename.".";
+                            }
+                        } // end foreach
+                    } else {
+                        echo "Fehler bei INSERT.";
+                    }
+                } else {
+                    echo "Fehler bei INSERT.";
+                }
             } else {
                 echo "Fehler beim Erstellen des Verzeichniss.";
             }
         }
-    }
+    } // end for
 }
 echo "</td></tr>\n</table>\n</form>\n";
 ?>
