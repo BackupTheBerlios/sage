@@ -1,13 +1,14 @@
 <?php
+require_once("mysql_class.inc.php");
 
 class ACLList {
     var $list;
-    
+
     function ACLList()
     {
         array($list);
     }
-    
+
     function selectByUserID($id)
     {
         $dbq = new DB;
@@ -19,7 +20,7 @@ class ACLList {
                   WHERE user_id = $id";
         
         $acls = $dbq->db_select($query);
-        
+
         for ($i = 0; $i < count($acls); $i++) {
             $acl = new ACL;
             $acl->initializeFromRow($acls[i]);
@@ -28,7 +29,7 @@ class ACLList {
                       
         return true;
     }
-    
+
     function selectByUserIDAndPath($id, $path)
     {
         $dbq = new DB;
