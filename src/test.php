@@ -5,7 +5,7 @@
 $PageName="SAGE";
 
 /*Der Header wird mit eingebunden*/
-require "include/header.inc";
+require "header.inc";
 ?>
 
 <?PHP
@@ -32,5 +32,5 @@ require "include/header.inc";
 
 <?PHP
 /*Der Rumpf wird mit eingebunden*/
-require "include/futter.inc";
+require "futter.inc";
 ?>
