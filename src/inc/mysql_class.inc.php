@@ -2,9 +2,9 @@
 
 class DB
 {
-   var $host = "db.berlios.de";
+   var $host = "localhost";
    var $db_name = "sage";
-   var $db_user = "sage";
+   var $db_user = "root";
    var $db_passwd = "";
 
    var $conn_id;

@@ -30,14 +30,15 @@ class Path
         return true;
     }
 
-    function selectByName($name)
+    function selectByNameAndParentID($name, $parent_id)
     {
         $dbq = new DB;
         $dbq->db_connect();
 
         $query = "SELECT path_id, loginname, pathname, description, insert_at, modified_at, path_id_parent
                   FROM sage_path
-                  WHERE pathname = '$name'";
+                  WHERE pathname = '$name'
+                  AND path_id_parent = $parent_id";
 
         $result = $dbq->db_select($query);
         if (count($result) == 0) return false;
@@ -47,6 +48,18 @@ class Path
         return true;
     }
 
+    function insert()
+    {
+        $dbq = new DB;
+        $dbq->db_connect();
+
+        $query = "INSERT INTO sage_path(loginname, pathname, description, insert_at, modified_at, path_id_parent)
+                  VALUES('$this->loginname', '$this->pathname',
+                         '$this->description', $this->insert_at, $this->modified_at, $this->path_id_parent)";
+
+        if (!$dbq->db_insert($query)) return false;
+        return true;
+    }
 
     function initializeFromRow($row)
     {
@@ -58,7 +71,6 @@ class Path
         $this->modified_at      = $row->modified_at;
         $this->path_id_parent   = $row->path_id_parent;
     }
-
 }
 
 

@@ -48,6 +48,20 @@ class ACL {
 
 
     }
+
+    function insert()
+    {
+        $dbq = new DB;
+        $dbq->db_connect();
+
+        $query = "INSERT into sage_acl (user_id, path_id, delete_path, write_path, read_path,
+                  rename_path, delete_file, write_file, read_file, rename_file)
+                  VALUES ($this->user_id, $this->path_id, '$this->delete_path', '$this->write_path', '$this->read_path',
+                  '$this->rename_path', '$this->delete_file', '$this->write_file', '$this->read_file', '$this->rename_file')";
+
+        if (!$dbq->db_insert($query)) return false;
+        return true;
+    }
 }
 
 

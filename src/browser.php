@@ -84,7 +84,7 @@ function listCurrentPath()
 {
     //  Verzeichniseintrag holen
     $path = new Path;
-    if (!$path->selectByName($_SESSION["path"])) {
+    if (!$path->selectByNameAndParentID($_SESSION["path"], $_SESSION["parent"])) {
         fehlerausgabe("Verzeichnis existiert nicht!");
         die();
     }
@@ -392,14 +392,70 @@ function doDelete()
 function doMkDir()
 {
     $cwd = $_SESSION["path"];
-    $newname = @$_REQUEST["OrdnerName"];
+    $newname = quotemeta(@$_REQUEST["OrdnerName"]);
 
-    $checkpath = new Path;
+    if (strstr($newname, "/") || strstr($newname, "\\")) {
+        fehlerausgabe("Kann $newname nicht anlegen: Ung&uuml;ltiger Name");
+        die();
+    }
 
-    if ($checkpath->selectByName($newname)) {
+
+    $path = new Path;
+
+    if ($path->selectByName($newname)) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Ordner existiert schon");
         die();
     }
+
+    $path->loginname        = $_SESSION["user"]->loginname;
+    $path->pathname         = $_SESSION["path"]."/".$newname;
+    $path->description      = $_REQUEST["Beschreibung"];
+    $path->insert_at        = "NOW()";
+    $path->modified_at      = "NOW()";
+
+    $curpath = new Path;
+    if (!$curpath->selectByName($_SESSION["path"])) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann Parent-Pfad nicht finden");
+        die();
+    }
+
+    $path->path_id_parent   = $curpath->path_id;
+    if (!$path->insert()) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann Pfad nicht in DB schreiben");
+        die();
+    }
+
+    $path->selectByName($_SESSION["path"]."/".$newname);
+
+    // zur Zeit wird ein neuer Ordner standardmässig der Gruppe zur Verfügung gestellt
+    $acluserid = $_SESSION["user"]->user_id_parent;
+    if ($acluserid == "") $acluserid = $_SESSION["user"]->user_id;
+
+    // [kludge]: verwende Referenz auf die Parent-ACL mit veränderter Path-ID, um eine neue
+    // ACL zu erzeugen
+    $acllist = new ACLList;
+    if (!$acllist->selectByUserIDAndPath($acluserid, $_SESSION["path"])) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Fehler beim Selektieren der Parent-ACL");
+        die();
+    }
+
+    if (count($acllist) < 1) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann Parent-ACL nicht finden");
+        die();
+    }
+
+    $acl = $acllist->list[0];
+    $acl->user_id = $acluserid;
+    $acl->path_id = $path->path_id;
+
+    if (!$acl->insert()) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann nicht einfügen");
+        die();
+    }
+
+//fs
+
+    return true;
 
 }
 
@@ -410,14 +466,20 @@ $PageName = "Browser";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
 
-$command = $_REQUEST["cmd"];
+$command = @$_REQUEST["cmd"];
 if ($command == "") $command = "ls";
 
 if ($command == "ls") {
-    $_SESSION["path"] = $_REQUEST["path"];
+    $_SESSION["path"] = @$_REQUEST["path"];
+    $_SESSION["parent"] = @$_REQUEST["parent"];
     if (!isset($_SESSION["path"])) {
         $_SESSION["path"] = "/";
     }
+
+    if (!isset($_SESSION["parent"])) {
+        $_SESSION["parent"] = "";
+    }
+
     listCurrentPath();
 } else if ($command == "upload") {
     printUploadFile();
