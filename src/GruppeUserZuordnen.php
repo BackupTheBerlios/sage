@@ -2,11 +2,11 @@
 
       include_once("/inc/zwei_listen.inc.php");
       
-echo"
-	<form method='POST' action='GruppeUserZuordnen.php'>
+echo <<<EOF
+	<form method="POST" action="GruppeUserZuordnen.php">
 
 		<h2>Mitglieder der Gruppe(n) zuordnen</h2>
-		<hr>
+		<hr />
 		<table>
 			<tr>
 				<td>
@@ -14,7 +14,7 @@ echo"
 				</td>
 
 				<td>
-				<select name='GruppenWaehlen'>
+				<select name="GruppenWaehlen">
 				</td>
 			</tr>
 		</table>
@@ -35,48 +35,47 @@ echo"
 
 			<tr>
 				<td>
-";
+EOF;
 
 				links();
 
-echo"
+echo <<<EOF
 				</td>
 
 				<td>
-				<input type='submit' name='LinksRechts' value='>>'>
-				<br>
-				<input type='submit' name='RechtsLinks' value='<<'>
+				<input type="submit" name="LinksRechts" value=">>" />
+				<br />
+				<input type="submit" name="RechtsLinks" value="<<" />
 				</td>
 
 				<td>
-";
+EOF;
 
 				rechts($LinksRechts, $RechtsLinks);
 
-echo"
+echo <<<EOF
 				</td>
 		    </tr>
 
 		</table>
 
-		<hr>
-		<br>
+		<hr />
+		<br />
 
 		<table>
 		<tr>
 			<td>
-			<input type='submit' value='OK' name='OK' style='WIDTH:90'>
+			<input type="submit" value="OK" name="OK" style="WIDTH:90" />
+                        </td>
 
-			</td>
-
-			<td width='20'>
+			<td width="20">
 			</td>
 
 			<td>
-			<input type='button' value='Abbrechen' name='Abbrechen' >
+			<input type="button" value="Abbrechen" name="Abbrechen" />
 			</td>
 		</tr>
 	</form>
-";
+EOF;
 
 ?>

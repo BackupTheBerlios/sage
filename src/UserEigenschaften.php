@@ -1,11 +1,11 @@
 <?php
 
-	echo"	
-	<form method='POST' action='UserEigenschaften.php'>
+echo <<<EOF
+	<form method="POST" action="UserEigenschaften.php">
 		
-		<h2>User Anmeldemaske</h2>
-		<hr>
-		<table border='1'>
+		<h2>User Eigenschaften ändern</h2>
+		<hr />
+		<table>
 
 			<tr>	
 				<td>
@@ -13,7 +13,7 @@
 				</td>
 				
 				<td>
-				<input type='password' name='AltesPasswort' value='$AltesPasswort'>
+				<input type="password" name="AltesPasswort" value="$AltesPasswort" />
 				</td>
 			</tr>
 			
@@ -23,7 +23,7 @@
 				</td>
 				
 				<td>
-				<input type='password' name='NeuesPasswort' value='$NeuesPasswort'>
+				<input type="password" name="NeuesPasswort" value="$NeuesPasswort" />
 				</td>
 			</tr>
 
@@ -33,7 +33,7 @@
 				</td>
 
 				<td>
-				<input type='password' name='NeuesPasswortWdh' value='$NeuesPasswortWdh'>
+				<input type="password" name="NeuesPasswortWdh" value="$NeuesPasswortWdh" />
 				</td>
 			</tr>
 
@@ -43,30 +43,30 @@
 				</td>
 				
 				<td>
-				<input type='text' name='EMail' value='$EMail'>
+				<input type="text" name="EMail" value="$EMail" />
 				</td>
 			</tr>
 		
 		</table>
-		<hr>
-		<br>
-		<table border ='1'>
+		<hr />
+		<br />
+		<table>
 		<tr>
 			<td>		
-			<input type='submit'  value='OK' style='WIDTH:90' name='OK'>
+			<input type="submit"  value="OK" style="WIDTH:90" name="OK" />
 			
 			</td>
 			
-			<td width='20'>
+			<td width="20">
 			</td>
 			
 			<td>
-			<input type='button' value='Abbrechen' name='Abbrechen' >
+			<input type="button" value="Abbrechen" name="Abbrechen" />
 			</td>
 		</tr>
-	<input type='hidden' name='gesendet' value='1'>
+	<input type="hidden" name="gesendet" value="1" />
 	</form>
-	";
+EOF;
 
 
 if($OK == TRUE)

@@ -2,24 +2,24 @@
 
       include_once("inc/zwei_listen.inc.php");
 
-echo"
-	<form method='POST' action='GruppenRechteBearbeiten.php'>
+echo <<<EOF
+	<form method="POST" action="GruppenRechteBearbeiten.php">
 
 		<h2>Gruppenrechte bearbeiten</h2>
 		<hr>
-		<table border='0'>
+		<table border="0">
 			<tr>
 				<td>
 				Gruppe auswählen:
 				</td>
 
 				<td>
-				<select name='GruppenWaehlen'>
+				<select name="GruppenWaehlen">
 				</td>
 			</tr>
 		</table>
 
-		<table border='0'>
+		<table border="0">
 			<tr>
 				<td>
 				Alle Rechte:
@@ -35,25 +35,25 @@ echo"
 
 			<tr>
 				<td>
-";
+EOF;
 
 				links();
 
-echo"
+echo <<<EOF
 				</td>
 
 				<td>
-				<input type='submit' name='LinksRechts' value='>>'>
+				<input type="submit" name="LinksRechts" value=">>">
 				<br>
-				<input type='submit' name='RechtsLinks' value='<<'>
+				<input type="submit" name="RechtsLinks" value="<<">
 				</td>
 
 				<td>
-";
+EOF;
 
 				rechts($LinksRechts, $RechtsLinks);
 
-echo"
+echo <<<EOF
 				</td>
 		    </tr>
 
@@ -65,19 +65,19 @@ echo"
 		<table>
 		<tr>
 			<td>
-			<input type='submit' value='OK' name='OK' style='WIDTH:90'>
+			<input type="submit" value="OK" name="OK" style="WIDTH:90">
 
 			</td>
 
-			<td width='20'>
+			<td width="20">
 			</td>
 
 			<td>
-			<input type='button' value='Abbrechen' name='Abbrechen' >
+			<input type="button" value="Abbrechen" name="Abbrechen" >
 			</td>
 		</tr>
 	</form>
-";
+EOF;
 
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 
-	echo"	
-	<form method='POST' action='UserAnmeldemaske.php'>
+echo <<<EOF
+	<form method="POST" action="UserAnmeldemaske.php">
 		
 		<h2>User Anmeldemaske</h2>
 		<hr>
@@ -12,17 +12,17 @@
 				</td>
 				
 				<td>
-				<input type='text' name='UserName' value='$UserName'>
+				<input type="text" name="UserName" value="$UserName">
 				</td>
 			</tr>
 			
-			<tr>	
+			<tr>
 				<td>
 				Passwort:
 				</td>
 				
 				<td>
-				<input type='password' name='Passwort' value='$Passwort'>
+				<input type="password" name="Passwort" value="$Passwort">
 				</td>
 			</tr>
 
@@ -32,7 +32,7 @@
 				</td>
 				
 				<td>
-				<input type='password' name='PasswortWdh' value='$PasswortWdh'>
+				<input type="password" name="PasswortWdh" value="$PasswortWdh">
 				</td>
 			</tr>
 	
@@ -42,7 +42,7 @@
 				</td>
 				
 				<td>
-				<input type='text' name='Nachname' value='$Nachname'>
+				<input type="text" name="Nachname" value="$Nachname">
 				</td>
 			</tr>
 			
@@ -50,9 +50,9 @@
 				<td>
 				Vorname:
 				</td>
-				
+
 				<td>
-				<input type='text' name='Vorname' value='$Vorname'>
+				<input type="text" name="Vorname" value="$Vorname">
 				</td>
 			</tr>
 			
@@ -62,7 +62,7 @@
 				</td>
 				
 				<td>
-				<input type='text' name='EMail' value ='$EMail'>
+				<input type="text" name="EMail" value ="$EMail">
 				</td>
 			</tr>
 		
@@ -72,19 +72,19 @@
 		<table>
 		<tr>
 			<td>		
-			<input type='submit'  value='OK' style='WIDTH:90' name='OK' >
+			<input type="submit"  value="OK" style="WIDTH:90" name="OK" >
                         </td>
 			
-			<td width='20'>
+			<td width="20">
 			</td>
 			
 			<td>
-			<input type='button' value='Abbrechen' name='Abbrechen' >
+			<input type="button" value="Abbrechen" name="Abbrechen" >
 			</td>
 		</tr>
-	<input type='hidden' name='gesendet' value='1'>
+	<input type="hidden" name="gesendet" value="1">
 	</form>
-	";
+EOF;
 
 if($OK == TRUE)
 { 
