@@ -57,7 +57,6 @@ class File
                   VALUES($this->path_id, '$this->loginname', '$this->filename',
                          '$this->description', $this->insert_at, $this->modified_at)";
 
-        echo ($query);
         if (!$dbq->db_insert($query)) return false;
         return true;
     }

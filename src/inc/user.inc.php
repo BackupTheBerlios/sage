@@ -55,6 +55,10 @@ class User
         return true;
     }
 
+    function insert()
+    {
+    }
+
     function initializeFromRow($row)
     {
         $this->user_id          = $row->user_id;

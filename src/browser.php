@@ -16,8 +16,9 @@ function printHeader()
     <tr>
         <td colspan="5" nowrap="nowrap" valign="top">
             <select name="cmd">
-                <option value="upload">Datei hochladen</a>
-                <option value="delete">Datei l&ouml;schen</a>
+                <option value="upload">Datei hochladen</option>
+                <option value="delete">Datei l&ouml;schen</option>
+                <option value="mkdir">Verzeichnis erstellen</option>
             </select>
             <input type="submit" value="Los" />
         </td>
@@ -184,6 +185,51 @@ function printUploadFile()
 EOF;
 }
 
+function printMkDir()
+{
+    $me = $_SERVER["PHP_SELF"];
+    echo <<<EOF
+<form name="OrdnerName" method="post" action="$me">
+<input type="hidden" name="cmd" value="domkdir" />
+<table border = 0>
+	<tr>
+		<td width="120">
+		<b>Ordner-Name:</b>
+		</td>
+
+		<td width ="240">
+		<input type="text" name="OrdnerName" size="47" />
+		</td>
+	</tr>
+
+	<tr>
+		<td width="120" valign="top">
+		<b>Beschreibung:*</b>
+		</td>
+
+		<td width ="240">
+		<textarea cols="36" rows="10" name="Beschreibung">
+		</textarea>
+		</td>
+
+	</tr>
+	<tr>
+		<td width="120"'>
+		<small>* optionale Felder</small>
+		</td>
+
+		<td width="120">
+		<input type="submit"  value="Anlegen" style="width:90" />
+		</td>
+
+		<td width="120" align="left">
+		<input type="submit"  value="Abbrechen" style="WIDTH:90" />
+		</td>
+	</tr>
+</table>
+EOF;
+}
+
 function doUpload()
 {
     global $sage_data_dir;
@@ -244,28 +290,119 @@ function openFile()
 
 function confirmDelete()
 {
+    $me = $_SERVER["PHP_SELF"];
+
     echo("Folgende Dateien und Verzeichnisse l&ouml;schen?\n");
     echo("<p />");
 
+    echo("<form name=\"confirmDelete\" method=\"post\" action=\"$me\">");
+    echo("<input type=\"hidden\" name=\"cmd\" value=\"dodelete\" />");
     $pathname = @$_REQUEST["pathname"];
     $filename = @$_REQUEST["filename"];
 
     for ($i = 0; $i < count($pathname); $i++) {
         $name = $pathname[$i];
-        echo ("$name<br />\n");
+        echo("<input type=\"hidden\" name=\"pathname[]\" value=\"$name\" />");
+        echo("$name<br />\n");
     }
 
     for ($i = 0; $i < count($filename); $i++) {
         $name = $filename[$i];
-        echo ("$name<br />\n");
+        echo("<input type=\"hidden\" name=\"filename[]\" value=\"$name\" />");
+        echo("$name<br />\n");
     }
 
-    echo ("<p />");
+    echo("<input type=\"submit\">Ja</input>\n");
+
+    echo("</form>");
+    echo("<p />");
 
     $me = $_SERVER["PHP_SELF"];
 
     //echo ("<a href=\"$me?cmd=dodelete\"
 }
+
+function doDelete()
+{
+    $pathname = @$_REQUEST["pathname"];
+    $filename = @$_REQUEST["filename"];
+
+    global $sage_data_dir;
+    //  Verzeichniseintrag holen
+    $path = new Path;
+    if (!$path->selectByName($_SESSION["path"])) {
+        fehlerausgabe("Kann nicht löschen: Verzeichnis existiert nicht");
+        die();
+    }
+
+    // ACL für das Verzeichnis holen
+    $acl = $_SESSION["user"]->getACLByPath($path->pathname);
+    if ($acl->delete_file != "1") {
+        fehlerausgabe("Kann in $path->pathname nicht löschen: Zugriff verweigert");
+        die();
+    }
+
+    $db = new DB;
+    for ($i = 0; $i < count($filename); $i++) {
+        $query= "DELETE FROM sage_files WHERE path_id = $path->path_id AND filename = '$filename[$i]'";
+        if (!$db->db_delete($query)) {
+            fehlerausgabe("Kann $filename[$i] nicht löschen: Datenbankabfrage fehlgeschlagen");
+            die();
+        } else {
+            if (!unlink($sage_data_dir.$path->pathname."/".$filename[$i])) {
+                fehlerausgabe("Kann $filename[$i] nicht löschen: Dateisystem weigert sich");
+                die();
+            }
+        }
+    }
+
+    for ($i = 0; $i < count($pathname); $i++) {
+        $acl = $_SESSION["user"]->getACLByPath($pathname[$i]);
+        $path = new Path;
+        $path->selectByName($pathname[$i]);
+
+        if ($acl->delete_path != "1") {
+            fehlerausgabe("Kann $pathname[$i] nicht löschen: Zugriff verweigert");
+            break;
+        }
+
+        $query = "SELECT * FROM sage_path WHERE path_id_parent = $path->path_id";
+        $childdir = $db->db_select($query);
+        if (count($childdir) != 0)  {
+            fehlerausgabe("Kann $pathname[$i] nicht löschen: Verzeichnis nicht leer");
+            break;
+        }
+
+        $query = "DELETE FROM sage_path WHERE path_id = $path->path_id";
+        if (!$db->db_delete($query)) {
+            fehlerausgabe("Kann $pathname[$i] nicht löschen: Datenbankabfrage fehlgeschlagen");
+            break;
+        }
+
+        if (!rmdir($sage_data_dir.$pathname[$i])) {
+            fehlerausgabe("Kann $pathname[$i] nicht löschen: Dateisystem weigert sich");
+            break;
+        }
+    }
+
+
+    listCurrentPath();
+}
+
+function doMkDir()
+{
+    $cwd = $_SESSION["path"];
+    $newname = @$_REQUEST["OrdnerName"];
+
+    $checkpath = new Path;
+
+    if ($checkpath->selectByName($newname)) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Ordner existiert schon");
+        die();
+    }
+
+}
+
 ?>
 
 <?php
@@ -288,8 +425,14 @@ if ($command == "ls") {
     doUpload();
 } else if ($command == "delete") {
     confirmDelete();
+} else if ($command == "dodelete") {
+    doDelete();
 } else if ($command == "open") {
     openFile();
+} else if ($command == "mkdir") {
+    printMkDir();
+} else if ($command == "domkdir") {
+    doMkDir();
 } else {
     listCurrentPath();
 }

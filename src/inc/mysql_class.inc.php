@@ -4,7 +4,7 @@ class DB
 {
    var $host = "localhost";
    var $db_name = "sage";
-   var $db_user = "root";
+   var $db_user = "amoser";
    var $db_passwd = "";
 
    var $conn_id;
@@ -38,10 +38,20 @@ class DB
       return $rueck;
    }
 
-    function db_insert($insert){
+   function db_insert($insert){
       if(!$this->conn_id)
 		$this->conn_id = $this->db_connect();
       $result = mysql_query("$insert", $this->conn_id);
+      if ($result){
+         return true;
+      }
+      return false;
+   }
+
+   function db_delete($delete){
+      if(!$this->conn_id)
+		$this->conn_id = $this->db_connect();
+      $result = mysql_query("$delete", $this->conn_id);
       if ($result){
          return true;
       }
