@@ -1,9 +1,7 @@
 <?php
 require_once("inc/functions.inc.php");
 if (!loggedIn()) setupSession();
-?>
 
-<?php
 echo "<?xml version=\"1.0\"?>\n";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -20,7 +18,7 @@ echo "<?xml version=\"1.0\"?>\n";
         <td nowrap="nowrap" valign="top" align="left">
             <img src="icons/logo_large.png" alt="Logo" />
         </td>
-        <td  nowrap="nowrap" valign="bottom" align="right">
+        <td nowrap="nowrap" valign="bottom" align="right">
             <?php
                 echo($_SESSION["user"]->loginname."<br />");
                 echo("<a href=\"logout.php\">Abmelden</a>");

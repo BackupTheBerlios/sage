@@ -18,9 +18,8 @@ function printHeader($path)
             $parname = $parent->pathname;
         }
     }
-
     if ($parname != "") {
-        echo("<a href=\"$me?cmd=ls&path=$parname\">Eine Ebene h&ouml;her</a>");
+        echo("<a href=\"$me?cmd=ls&amp;path=$parname\">Eine Ebene h&ouml;her</a>");
     }
 
 
@@ -28,7 +27,7 @@ function printHeader($path)
 <form name="Browser" action="$me" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed">
     <tr>
-        <td colspan="5" nowrap="nowrap" valign="top">
+        <td colspan="4" nowrap="nowrap" valign="top">
             <select name="cmd">
                 <option value="upload">Datei erstellen</option>
                 <option value="mkdir">Verzeichnis erstellen</option>
@@ -38,9 +37,9 @@ function printHeader($path)
         </td>
     </tr>
     <tr>
-        <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
+      <!---  <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             Auswahl
-        </td>
+        </td> -->
         <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             Name
         </td>
@@ -63,14 +62,15 @@ function printDirectoryEntry(&$path, $isFile)
         $icon = getFileIcon($path->filename);
 
         $me = $_SERVER["PHP_SELF"];
-        echo("<tr>");
+        echo("<tr>\n");
         echo("<td><input type=\"checkbox\" name=\"filename[]\" value=\"$path->filename\" />");
-        echo("<td><img src=\"icons/$icon\" alt=\"[file]\" />");
-        echo("<a href=\"$me?cmd=open&filename=$path->filename\">$path->filename</a></td>\n");
+        echo("<img src=\"icons/$icon\" alt=\"[file]\" />");
+        //echo("<a href=\"$me?cmd=open&filename=$path->filename\">$path->filename</a></td>\n");
+        echo("<a href=\"$me?cmd=open&amp;filename=$path->filename\">$path->filename</a></td>\n");
         //echo("<a href=\"path=$path->filename\">$path->filename</a></td>\n");
-        echo("<td>$path->description</td>");
-        echo("<td>$path->loginname</td>");
-        echo("<td>$path->insert_at</td>");
+        echo("<td>$path->description</td>\n");
+        echo("<td>$path->loginname</td>\n");
+        echo("<td>$path->insert_at</td>\n");
         echo("</tr>");
 
 
@@ -80,9 +80,9 @@ function printDirectoryEntry(&$path, $isFile)
         $shortname = str_replace($_SESSION["path"]."/", "", $path->pathname);
         echo ("<tr>");
         echo("<td><input type=\"checkbox\" name=\"pathname[]\" value=\"$path->pathname\" />");
-        echo("<td><img src=\"icons/dir.gif\" alt=\"[dir]\" />");
-
-        echo("<a href=\"$me?cmd=ls&path=$path->pathname\">$shortname</a></td>\n");
+        echo("<img src=\"icons/dir.gif\" alt=\"[dir]\" />");
+        echo("<a href=\"$me?cmd=ls&amp;path=$path->pathname\">$shortname</a></td>\n");
+        //echo("<a href=\"$me?cmd=ls;path=$path->pathname\">$shortname</a></td>\n");
         echo("<td>$path->description</td>");
         echo("<td>$path->loginname</td>");
         echo("<td>$path->insert_at</td>");
@@ -497,9 +497,7 @@ function doMkDir()
 
 }
 
-?>
-
-<?php
+ob_start();
 $PageName = "Browser";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
@@ -534,9 +532,6 @@ if ($command == "ls") {
     listCurrentPath();
 }
 
-?>
-
-
-<?php
 require("inc/footer.inc.php");
+ob_end_flush();
 ?>

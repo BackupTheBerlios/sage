@@ -2,7 +2,7 @@
   <tr>
     <!--- <td bgcolor="#CCCCCC"" nowrap="nowrap" valign="top" style="width:20%"> -->
     <td bgcolor="#274E9C" nowrap="nowrap" valign="top" style="width:20%">
-	<div align="center"><h2><font color="#CAA778">Menü</font></h2></div>
+	<div align="center"><h2><font color="#CAA778">Men&uuml;</font></h2></div>
 
       <?php
            	require_once ("module.inc.php");
@@ -26,6 +26,7 @@
 				if(getaccess($acl))
 					echo $linkRechteListe[$modul->list[$i]->pathname];
 			}
+			echo("</font>");
       ?>
 
 
