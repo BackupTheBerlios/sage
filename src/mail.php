@@ -5,6 +5,7 @@ require_once("inc/functions.inc.php");
 
 $pagename = "Mail";
 require("inc/header.inc.php");
+require("inc/leftnav.inc.php");
 ?>
 
 
