@@ -1,7 +1,8 @@
 <table width="100%" border="0" cellspacing="5" cellpadding="10" style="table-layout:fixed">
   <tr>
-    <td bgcolor="#CCCCCC" nowrap valign="top" style="width:20%">
-	<div align="center"><H2>Menü</H2></div>
+    <!--- <td bgcolor="#CCCCCC"" nowrap="nowrap" valign="top" style="width:20%"> -->
+    <td bgcolor="#274E9C" nowrap="nowrap" valign="top" style="width:20%">
+	<div align="center"><h2><font color="#CAA778">Menü</font></h2></div>
 
       <?php
            	require_once ("module.inc.php");
@@ -15,6 +16,7 @@
 				return false;
 			}
 
+            echo("<font color=\"#CAA778\">");
            	$modul=new ModuleList;
            	$modul->selectAll();
 		   	$anz=count($modul->list);
@@ -27,9 +29,9 @@
       ?>
 
 
-      <div align="center"><a href="index.php">Home</a></div><br />
+      <div align="center"><a href="index.php" style="color: #CAA778;">Home</a></div><br />
     </td>
-    <td nowrap style="width:80%" valign="top">
+    <td nowrap="nowrap" style="width:80%" valign="top">
 
     <?php
        /*

@@ -38,19 +38,19 @@ function printHeader($path)
         </td>
     </tr>
     <tr>
-        <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
+        <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             Auswahl
         </td>
-        <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
+        <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             Name
         </td>
-        <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
+        <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             Beschreibung
         </td>
-        <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
+        <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             Besitzer
         </td>
-        <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
+        <td bgcolor="#CAA778" nowrap="nowrap" valign="top">
             erstellt am
         </td>
     </tr>
