@@ -114,7 +114,11 @@
 
 	function calendar($ModulName){
 		
-		$hilfe_admin_text=array(0=>"<div align=\"center\"><H3>Benutzung des Kalendars</H3></div>");
+		$hilfe_admin_text=array(0=>"<div align=\"center\"><H3>Benutzung des Kalendars</H3></div>
+		Mit Hile diesen Moduls kann ein User wichtige Termine in seinem Kalender eintragen und andere User zu einem Termin einladen. 
+		Um einen Termin einzustellen, klickt man auf einen beliebigen Tag und gibt in der Eingabemaske die aufgef$uuml;hrten
+		Daten ein. M&ouml;chte man mehrere User zu einem Termin einladen, so gibt man die User durch \",\" getrennt ein. M&ouml;chte
+		man einen Termin l&ouml;schen, dann klickt man auf einen Termin und l&ouml;scht diesen durch die entsprechende Maske.");
 
 		$hilfe_admin_screen=array(0=>"");
 		
