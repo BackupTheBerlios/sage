@@ -1,9 +1,9 @@
 <?php
 require_once("mysql_class.inc.php");
-require_once("path_impl.inc.php");
+require_once("mysql_class.inc.php");
 
 
-class PathList {
+class ModuleList {
     var $list = 0;
 
     function PathList()
@@ -19,7 +19,7 @@ class PathList {
         $query = "SELECT path_id, loginname, pathname, description, insert_at, modified_at, path_id_parent
                   FROM sage_path
                   WHERE path_id_parent = $id
-                  AND pathname LIKE '/*"";";
+                  AND pathname NOT LIKE '/*"";
 
         $paths = $dbq->db_select($query);
 
