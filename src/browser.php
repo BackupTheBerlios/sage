@@ -1,4 +1,5 @@
 <?php
+require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
 require_once("inc/path.inc.php");
 require_once("inc/file.inc.php");
@@ -137,7 +138,7 @@ function printUploadFile()
 		</td>
 
 		<td width ="240" colspan="2">
-		<input name="DateiName" size="47">
+		<input name="DateiName" type="text" size="47">
 		</td>
 	</tr>
 
@@ -146,7 +147,7 @@ function printUploadFile()
 		<b>Beschreibung:*</b>
 		</td>
 
-		<td width ="240" colspan="2">
+		<td width="240" colspan="2">
 		<textarea cols="36" rows="10" name="Beschreibung">
 		</textarea>
 		</td>
@@ -186,8 +187,15 @@ function doUpload()
         die();
     }
 
+    $file = new File;
+    if ($file->selectByPathIDAndName($path->path_id, $_REQUEST["DateiName"])) {
+        fehlerausgabe("Kann nicht hochladen: Datei existiert schon");
+        die();
+    }
 
-    move_uploaded_file($_FILES["userfile"]["tmp_name"], "/place/to/put/uploaded/file");
+    move_uploaded_file($_FILES["userfile"]["tmp_name"], $sage_data_dir.$path->pathname.$_REQUEST["DateiName"]);
+    listCurrentPath();
+}
 ?>
 
 <?php

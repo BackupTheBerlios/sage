@@ -18,8 +18,7 @@ class PathList {
 
         $query = "SELECT path_id, loginname, pathname, description, insert_at, modified_at, path_id_parent
                   FROM sage_path
-                  WHERE path_id_parent = $id
-                  AND pathname LIKE '/*'";";
+                  WHERE pathname REGEXP '[/]'";
 
         $paths = $dbq->db_select($query);
 

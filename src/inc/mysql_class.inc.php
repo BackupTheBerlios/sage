@@ -29,6 +29,8 @@ class DB
    function db_select($select){
       $rueck = array();
 
+      echo($select."<br />");
+
       if(!$this->conn_id)
 		$this->conn_id = $this->db_connect();
       $result = mysql_query("$select", $this->conn_id);
