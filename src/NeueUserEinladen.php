@@ -1,9 +1,9 @@
 <?php
 
-      include_once("zwei_listen.inc.php");
+      include_once("/inc/zwei_listen.inc.php");
       
 echo"
-	<form method='POST' action='EinladenNeuerUser.php'>
+	<form method='POST' action='NeueUserEinladen.php'>
 
 		<h2>Neue User einladen</h2>
 		<hr>
@@ -79,5 +79,19 @@ echo"
 	</form>
 ";
 
+
+if ($OK == TRUE)
+ 
+  if($EMail == NULL)
+  {
+    echo"Es wurde keine E-Mail-Adresse angegeben!";
+    $OK = FALSE;
+  }
+  else
+  {
+    echo"Operation erfolgreich";
+    $OK = FALSE;
+    //Neuen User temporär einrichten und per E-Mail informieren
+  }
 
 ?>

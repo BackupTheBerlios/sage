@@ -1,25 +1,25 @@
 <?php
 
-      include_once("zwei_listen.inc.php");
+      include_once("/inc/zwei_listen.inc.php");
       
 echo"
 	<form method='POST' action='UserLoeschen.php'>
 
 		<h2>User loeschen</h2>
-		<hr>
-		<table border='0'>
+		<hr/>
+		<table>
 			<tr>
 				<td>
 				Gruppe auswählen:
 				</td>
 
 				<td>
-				<select name='GruppenWaehlen'>
+				<select name='GruppenWaehlen' />
 				</td>
 			</tr>
 		</table>
 
-		<table border='0'>
+		<table>
 			<tr>
 				<td>
 				Alle User:
@@ -43,9 +43,9 @@ echo"
 				</td>
 
 				<td>
-				<input type='submit' name='LinksRechts' value='>>'>
+				<input type='submit' name='LinksRechts' value='>>' />
 				<br>
-				<input type='submit' name='RechtsLinks' value='<<'>
+				<input type='submit' name='RechtsLinks' value='<<' />
 				</td>
 
 				<td>

@@ -80,5 +80,17 @@ echo"
 	</form>
 ";
 
-
+if ($OK == TRUE)
+ 
+  if($Gruppenname == NULL)
+  {
+    echo"Es wurde kein Gruppenname angegeben!";
+    $OK = FALSE;
+  }
+  else
+  {
+    echo"Operation erfolgreich";
+    $OK = FALSE;
+    //Neue Gruppe einrichten
+  }
 ?>

@@ -1,13 +1,13 @@
 <?php
 
-      include_once("zwei_listen.inc.php");
+      include_once("/inc/zwei_listen.inc.php");
       
 echo"
 	<form method='POST' action='GruppeUserZuordnen.php'>
 
 		<h2>Mitglieder der Gruppe(n) zuordnen</h2>
 		<hr>
-		<table border='0'>
+		<table>
 			<tr>
 				<td>
 				Gruppe auswählen:
@@ -19,7 +19,7 @@ echo"
 			</tr>
 		</table>
 
-		<table border='0'>
+		<table>
 			<tr>
 				<td>
 				Alle User:
@@ -78,6 +78,5 @@ echo"
 		</tr>
 	</form>
 ";
-
 
 ?>

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 		if ($Passwort <> $PasswortWdh)
 		{
 			echo "

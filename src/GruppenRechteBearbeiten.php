@@ -1,7 +1,7 @@
 <?php
 
-      include_once("zwei_listen.inc.php");
-      
+      include_once("inc/zwei_listen.inc.php");
+
 echo"
 	<form method='POST' action='GruppenRechteBearbeiten.php'>
 

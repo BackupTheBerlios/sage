@@ -1,7 +1,7 @@
-<?PHP
+<?php
 
 	echo"	
-	<form method='POST' action='UserEinrichtenCheck.php'>
+	<form method='POST' action='UserAnmeldemaske.php'>
 		
 		<h2>User Anmeldemaske</h2>
 		<hr>
@@ -12,7 +12,7 @@
 				</td>
 				
 				<td>
-				<input type='text' name='UserName'>
+				<input type='text' name='UserName' value='$UserName'>
 				</td>
 			</tr>
 			
@@ -22,17 +22,17 @@
 				</td>
 				
 				<td>
-				<input type='password' name='Passwort'>
+				<input type='password' name='Passwort' value='$Passwort'>
 				</td>
 			</tr>
-			
-			<tr>	
+
+			<tr>
 				<td>
 				Passwort (wdh):
 				</td>
 				
 				<td>
-				<input type='password' name='PasswortWdh'>
+				<input type='password' name='PasswortWdh' value='$PasswortWdh'>
 				</td>
 			</tr>
 	
@@ -42,7 +42,7 @@
 				</td>
 				
 				<td>
-				<input type='text' name='Nachname'>
+				<input type='text' name='Nachname' value='$Nachname'>
 				</td>
 			</tr>
 			
@@ -52,7 +52,7 @@
 				</td>
 				
 				<td>
-				<input type='text' name='Vorname'>
+				<input type='text' name='Vorname' value='$Vorname'>
 				</td>
 			</tr>
 			
@@ -62,7 +62,7 @@
 				</td>
 				
 				<td>
-				<input type='text' name='EMail'>
+				<input type='text' name='EMail' value ='$EMail'>
 				</td>
 			</tr>
 		
@@ -72,9 +72,8 @@
 		<table>
 		<tr>
 			<td>		
-			<input type='submit'  value='OK' style='WIDTH:90' >
-			
-			</td>
+			<input type='submit'  value='OK' style='WIDTH:90' name='OK' >
+                        </td>
 			
 			<td width='20'>
 			</td>
@@ -87,6 +86,24 @@
 	</form>
 	";
 
-
+if($OK == TRUE)
+{ 
+  if ($UserName == NULL | $Passwort == NULL | $PasswortWdh == NULL | $Nachname == NULL | $Vorname == NULL | $EMail == NULL)
+  {
+    echo"Es wurden nicht alle Pflichtfelder ausgefuellt!";
+    $OK = FALSE;
+  }
+  else
+  if ($Passwort != $PasswortWdh)
+  {
+    echo"Die neuen Passwoerter muessen identisch sein!";
+    $OK = FALSE;
+  }
+  else
+  {
+    echo"User erfolgreich angemeldet";
+    $OK = FALSE;
+  }
+}
 
 ?>

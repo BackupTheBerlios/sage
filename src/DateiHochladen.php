@@ -3,7 +3,7 @@
 echo("
 <h2>Datei hochladen</h2>
 
-<form name='DateiSuchen' method='post' action='collect.php'>
+<form name='DateiSuchen' method='post' action='DateiHochladen.php'>
 <table border = 0>
 	<tr>
 		<td width='100'>
@@ -15,15 +15,14 @@ echo("
 		</td>
 	</tr>
 </table>
-</form>	
 
-<form name='DateiInfo' method='post' action=''>
+
 <table border = 0>
 	<tr>
 		<td width='100'>
 		<b>Name:</b>
 		</td>
-		
+
 		<td width ='280'>
 		<input name='FileName' size='52' />
 		</td>
@@ -42,7 +41,6 @@ echo("
 	</tr>
 </table>
 
-
 <table border = 0>
 	<tr>
 		<td width='100'>
@@ -60,4 +58,18 @@ echo("
 </form>
 ");
 
+if ($FileOK == TRUE)
+{
+  if($FileUpload == NULL | $FileName == NULL | $FileDescription == NULL )
+  {
+    echo"Es wurde nicht alle Pflichtfelder ausgefuellt!";
+    $OK = FALSE;
+  }
+  else
+  {
+    echo"Operation erfolgreich";
+    $OK = FALSE;
+    //Datei hochladen
+  }
+}
 ?>

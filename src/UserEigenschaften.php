@@ -1,19 +1,19 @@
-<?PHP
+<?php
 
 	echo"	
-	<form method='POST' action='UserEinrichtenCheck.php'>
+	<form method='POST' action='UserEigenschaften.php'>
 		
 		<h2>User Anmeldemaske</h2>
 		<hr>
-		<table>
-						
+		<table border='1'>
+
 			<tr>	
 				<td>
 				Altes Passwort:
 				</td>
 				
 				<td>
-				<input type='password' name='AltesPasswort'>
+				<input type='password' name='AltesPasswort' value='$AltesPasswort'>
 				</td>
 			</tr>
 			
@@ -23,37 +23,37 @@
 				</td>
 				
 				<td>
-				<input type='password' name='NeuesPasswort'>
+				<input type='password' name='NeuesPasswort' value='$NeuesPasswort'>
 				</td>
 			</tr>
-	
-			<tr>	
+
+			<tr>
 				<td>
 				Neues Passwort (wdh):
 				</td>
-				
+
 				<td>
-				<input type='password' name='NeuesPasswortWdh'>
+				<input type='password' name='NeuesPasswortWdh' value='$NeuesPasswortWdh'>
 				</td>
 			</tr>
-			
-			<tr>	
+
+			<tr>
 				<td>
 				E-Mail:
 				</td>
 				
 				<td>
-				<input type='text' name='EMail'>
+				<input type='text' name='EMail' value='$EMail'>
 				</td>
 			</tr>
 		
 		</table>
 		<hr>
 		<br>
-		<table>
+		<table border ='1'>
 		<tr>
 			<td>		
-			<input type='submit'  value='OK' style='WIDTH:90' >
+			<input type='submit'  value='OK' style='WIDTH:90' name='OK'>
 			
 			</td>
 			
@@ -67,4 +67,28 @@
 	<input type='hidden' name='gesendet' value='1'>
 	</form>
 	";
+
+
+if($OK == TRUE)
+{
+  if ($AltesPasswort == NULL | $NeuesPasswort == NULL | $NeuesPasswortWdh == NULL | $EMail == NULL)
+  {
+    echo"Es wurden nicht alle Pflichtfelder ausgefuellt!";
+    $OK = FALSE;
+  }
+  else
+  if ($NeuesPasswort != $NeuesPasswortWdh)
+  {
+    echo"Die neuen Passwoerter muessen identisch sein!";
+    $OK = FALSE;
+  }
+  else
+  {
+    echo"Operation erfolgreich";
+    $OK = FALSE;
+    
+    //Daten in die Datenbank schreiben
+  }
+}
+
 ?>
