@@ -8,7 +8,11 @@ $PageName = "Index";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
 
-echo "<p>Dies ist Sage, Version $sage_version.</p>";
+echo <<<EOF
+<p>Hallo, dies ist Sage, Version $sage_version.</p>
+
+EOF;
+
 ?>
 
 

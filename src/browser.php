@@ -6,9 +6,23 @@ require_once("inc/file.inc.php");
 require_once("inc/fehlerausgabe.inc.php");
 
 
-function printHeader()
+function printHeader($path)
 {
     $me = $_SERVER["PHP_SELF"];
+    $parname = "";
+
+    echo ("Verzeichnis: ".$path->pathname."<br />\n");
+    $parent = new Path;
+    if ($path->path_id_parent != NULL) {
+        if ($parent->selectById($path->path_id_parent)) {
+            $parname = $parent->pathname;
+        }
+    }
+
+    if ($parname != "") {
+        echo("<a href=\"$me?cmd=ls&path=$parname\">Eine Ebene h&ouml;her</a>");
+    }
+
 
     echo <<<EOF
 <form name="Browser" action="$me" method="post">
@@ -16,9 +30,9 @@ function printHeader()
     <tr>
         <td colspan="5" nowrap="nowrap" valign="top">
             <select name="cmd">
-                <option value="upload">Datei hochladen</option>
-                <option value="delete">Datei l&ouml;schen</option>
+                <option value="upload">Datei erstellen</option>
                 <option value="mkdir">Verzeichnis erstellen</option>
+                <option value="delete">L&ouml;schen</option>
             </select>
             <input type="submit" value="Los" />
         </td>
@@ -62,11 +76,13 @@ function printDirectoryEntry(&$path, $isFile)
 
     } else {
         $me = $_SERVER["PHP_SELF"];
+
+        $shortname = str_replace($_SESSION["path"]."/", "", $path->pathname);
         echo ("<tr>");
         echo("<td><input type=\"checkbox\" name=\"pathname[]\" value=\"$path->pathname\" />");
         echo("<td><img src=\"icons/dir.gif\" alt=\"[dir]\" />");
 
-        echo("<a href=\"$me?cmd=ls&path=$path->pathname\">$path->pathname</a></td>\n");
+        echo("<a href=\"$me?cmd=ls&path=$path->pathname\">$shortname</a></td>\n");
         echo("<td>$path->description</td>");
         echo("<td>$path->loginname</td>");
         echo("<td>$path->insert_at</td>");
@@ -84,12 +100,10 @@ function listCurrentPath()
 {
     //  Verzeichniseintrag holen
     $path = new Path;
-    if (!$path->selectByNameAndParentID($_SESSION["path"], $_SESSION["parent"])) {
+    if (!$path->selectByName($_SESSION["path"])) {
         fehlerausgabe("Verzeichnis existiert nicht!");
         die();
     }
-
-    echo ("Verzeichnis: ".$path->pathname."<p />");
 
     // ACL für das Verzeichnis holen
     //$user = $_SESSION["user"];
@@ -99,16 +113,9 @@ function listCurrentPath()
         die();
     }
 
-    printHeader();
+    printHeader($path);
 
     // Verzeichnisse listen
-    $parent = new Path;
-    if ($path->path_id_parent != NULL) {
-        if ($parent->selectById($path->path_id_parent)) {
-            printDirectoryEntry($parent, false);
-        }
-    }
-
     $pathlist = new PathList;
     $pathlist->selectByParentId($path->path_id);
     for ($i = 0; $i < count($pathlist->list); $i++) {
@@ -208,8 +215,7 @@ function printMkDir()
 		</td>
 
 		<td width ="240">
-		<textarea cols="36" rows="10" name="Beschreibung">
-		</textarea>
+		<textarea cols="36" rows="10" name="Beschreibung"></textarea>
 		</td>
 
 	</tr>
@@ -233,6 +239,24 @@ EOF;
 function doUpload()
 {
     global $sage_data_dir;
+
+    $filename = "";
+
+    //if ((!isset($_REQUEST["DateiName"])) || (@$_REQUEST["DateiName"] == "")) {
+    if (@$_REQUEST["DateiName"] != "") {
+        $filename = $_REQUEST["DateiName"];
+    } else {
+        $filename = $_FILES["userfile"]["name"];
+    }
+
+/*
+    $filename = quotemeta($filename);
+
+    if (strstr($filename, "/") || strstr($filename, "\\")) {
+        fehlerausgabe("Kann $newname nicht anlegen: Ung&uuml;ltiger Name");
+        die();
+    }
+*/
     //  Verzeichniseintrag holen
     $path = new Path;
     if (!$path->selectByName($_SESSION["path"])) {
@@ -248,21 +272,20 @@ function doUpload()
     }
 
     $file = new File;
-    if ($file->selectByPathIDAndName($path->path_id, $_REQUEST["DateiName"])) {
+    if ($file->selectByPathIDAndName($path->path_id, $filename)) {
         fehlerausgabe("Kann nicht hochladen: Datei existiert schon");
         die();
     }
 
-
     $file->path_id = $path->path_id;
     $file->loginname = $_SESSION["user"]->loginname;
-    $file->filename = $_REQUEST["DateiName"];
-    $file->description = $_REQUEST["Beschreibung"];
+    $file->filename = $filename;
+    $file->description = @$_REQUEST["Beschreibung"];
     $file->insert_at = "NOW()";
     $file->modified_at = "NOW()";
     if ($file->insert()) {
-        move_uploaded_file($_FILES["userfile"]["tmp_name"], $sage_data_dir.$path->pathname."/".$_REQUEST["DateiName"]);
-        listCurrentPath();
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], $sage_data_dir.$path->pathname."/".$filename);
+        redirectTo($_SERVER["PHP_SELF"]."?cmd=ls");
     } else {
         fehlerausgabe("Kann nicht hochladen: Einf&uumlgen in Datenbank fehlgeschlagen");
         die();
@@ -391,6 +414,8 @@ function doDelete()
 
 function doMkDir()
 {
+    global $sage_data_dir;
+
     $cwd = $_SESSION["path"];
     $newname = quotemeta(@$_REQUEST["OrdnerName"]);
 
@@ -454,6 +479,15 @@ function doMkDir()
     }
 
 //fs
+    $oldumask = umask();
+    umask(077);
+    if (!mkdir($sage_data_dir.$path->pathname, 0700)) {
+        fehlerausgabe("Kann Ordner $newname nicht anlegen: Dateisystem weigert sich");
+        die();
+    }
+    umask($oldumask);
+
+    redirectTo($_SERVER["PHP_SELF"]."?cmd=ls");
 
     return true;
 
@@ -470,14 +504,11 @@ $command = @$_REQUEST["cmd"];
 if ($command == "") $command = "ls";
 
 if ($command == "ls") {
-    $_SESSION["path"] = @$_REQUEST["path"];
-    $_SESSION["parent"] = @$_REQUEST["parent"];
+    if (isset($_REQUEST["path"])) {
+        $_SESSION["path"] = @$_REQUEST["path"];
+    }
     if (!isset($_SESSION["path"])) {
         $_SESSION["path"] = "/";
-    }
-
-    if (!isset($_SESSION["parent"])) {
-        $_SESSION["parent"] = "";
     }
 
     listCurrentPath();

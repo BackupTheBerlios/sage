@@ -20,7 +20,7 @@ echo "<tr><td>Status:</td><td>\n";
 $err=255;
 if (isset($_POST[check])) {
     $err=0;
-    if ($groupname == "") {          // wurde Gruppen-Name ausgefuellt?
+    if ($_POST["groupname"] == "") {          // wurde Gruppen-Name ausgefuellt?
         echo "Kein Gruppen-Name angegeben.<br />\n";
         $err=1;
     }
@@ -45,7 +45,7 @@ if ($err == 0) {
                 fwrite($f_htaccess,"AuthUserFile ".$htpasswd."\n");
                 fwrite($f_htaccess,"AuthGroupFile ".$htgroup."\n");
                 fwrite($f_htaccess,"require group ".$groupname."\n");
-                fclose($f_htaccess);                
+                fclose($f_htaccess);
                 echo "Gruppe angelegt.";
             } else {
                 echo "Fehler beim Erstellen des Verzeichniss.";

@@ -1,5 +1,5 @@
 <table width="100%" border="0" cellspacing="5" cellpadding="10" style="table-layout:fixed">
-  <tr>  
+  <tr>
     <td bgcolor="#CCCCCC" nowrap valign="top" style="width:20%">
 	<div align="center"><H2>Menü</H2></div>
 
@@ -18,7 +18,7 @@
            	$modul=new ModuleList;
            	$modul->selectAll();
 		   	$anz=count($modul->list);
-		   	for($i=0;$i<$anz;$i++){	
+		   	for($i=0;$i<$anz;$i++){
 				$acl=new ACL;
 		   		$acl=@$_SESSION["user"]->getACLByPath($modul->list[$i]->pathname);
 				if(getaccess($acl))
@@ -29,7 +29,7 @@
 
       <div align="center"><a href="index.php">Home</a></div><br />
     </td>
-    <td nowrap style="width:80%">
+    <td nowrap style="width:80%" valign="top">
 
     <?php
        /*

@@ -12,6 +12,11 @@ insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rena
 insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 2, '1', '1', '1', '1', '1', '1', '1', '1');
 insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 3, '1', '1', '1', '1', '1', '1', '1', '1');
 insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 4, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 5, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 6, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 7, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 8, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 9, '1', '1', '1', '1', '1', '1', '1', '1');
 insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 1, '0', '0', '1', '0', '0', '0', '0', '0');
 insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 2, '0', '1', '1', '0', '1', '1', '1', '1');
 insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 3, '0', '0', '1', '0', '1', '1', '1', '1');
@@ -21,6 +26,11 @@ insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id
 insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (2,'kf0fhomer','/kf0f','Ordner der Klasse KF0F','4.4.2002', 1);
 insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (3,'kf0fbart','/kf04','Ordner der Klasse KF04','14.12.2001', 1);
 insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (4,'kf0fhomer','/austausch','Austauschordner fuer alle ','1.1.1999', 1);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (5,'nobody','BROWSER','Der Dateibrowser','1.1.1999', NULL);
+insert into sage_patfh (path_id,loginname,pathname,description,insert_at, path_id_parent) values (6,'nobody','MAIL','Das Mailsystem','1.1.1999', NULL);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (7,'nobody','CALENDAR','Der Kalender','1.1.1999', NULL);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (8,'nobody','ADMIN','Administrationstools','1.1.1999', NULL);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (9,'nobody','HILFE','Das Hilfesystem','1.1.1999', NULL);
 
 insert into sage_user_calendar_map (user_id,calendar_id) values (1,1);
 insert into sage_user_calendar_map (user_id,calendar_id) values (1,3);

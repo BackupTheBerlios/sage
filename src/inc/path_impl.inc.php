@@ -30,15 +30,16 @@ class Path
         return true;
     }
 
-    function selectByNameAndParentID($name, $parent_id)
+    function selectByName($name)
     {
         $dbq = new DB;
         $dbq->db_connect();
 
         $query = "SELECT path_id, loginname, pathname, description, insert_at, modified_at, path_id_parent
                   FROM sage_path
-                  WHERE pathname = '$name'
-                  AND path_id_parent = $parent_id";
+                  WHERE pathname = '$name'";
+
+
 
         $result = $dbq->db_select($query);
         if (count($result) == 0) return false;
