@@ -1,6 +1,6 @@
 <?php
-require_once("mysql_class.inc.php");
-require_once("acl.inc.php");
+require_once("inc/mysql_class.inc.php");
+require_once("inc/acl.inc.php");
 
 
 class User

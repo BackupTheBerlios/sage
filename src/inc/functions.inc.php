@@ -1,7 +1,7 @@
 <?php
-require_once("config.inc.php");
-require_once("mysql_class.inc.php");
-require_once("user.inc.php");
+require_once("inc/config.inc.php");
+require_once("inc/mysql_class.inc.php");
+require_once("inc/user.inc.php");
 
 // ------------------------------- //
 // thx to chamele0n.1@email.com    //

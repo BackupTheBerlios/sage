@@ -1,6 +1,6 @@
 <?php
-require_once("mysql_class.inc.php");
-require_once("path_impl.inc.php");
+require_once("inc/mysql_class.inc.php");
+require_once("inc/path_impl.inc.php");
 
 
 class PathList {
