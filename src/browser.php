@@ -107,73 +107,87 @@ function listCurrentPath()
     printFooter();
 }
 
-function uploadFile()
+function printUploadFile()
 {
+    $me = $_SERVER["PHP_SELF"];
     echo <<<EOF
 
 <h2>Datei hochladen</h2>
 
-<form name="DateiSuchen" method='post' action="collect.php">
+<form name="DateiSuchen" enctype="multipart/form-data" action="$me" method="post">
+<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
+<input type="hidden" name="cmd" value="doupload" />
 <table border = 0>
 	<tr>
-		<td width='120'>
+		<td width="120">
 		<b>Lokale Datei:</b>
 		</td>
 
-		<td width='120'>
-		<input name='LokaleDatei' size='25'>
+		<td width="120">
+		<input name="LokaleDatei" size="25" />
 		</td>
 
-		<td width='120' align='right'>
-		<input type='button'  value='Durchsuchen' style='WIDTH:90' >
+		<td width="120" align="right">
+		<input type="file" name="userfile" />
 		</td>
 	</tr>
-</table>
-</form>
-
-<form name='DateiInfo' method='post' action=''>
-<table border = 0>
 	<tr>
-		<td width='120'>
+		<td width="120">
 		<b>Name:*</b>
 		</td>
 
-		<td width ='240'>
-		<input name='DateiName' size='47'>
+		<td width ="240" colspan="2">
+		<input name="DateiName" size="47">
 		</td>
 	</tr>
 
 	<tr>
-		<td width='120' valign='top'>
+		<td width="120" valign="top">
 		<b>Beschreibung:*</b>
 		</td>
 
-		<td width ='240'>
-		<textarea cols='36' rows='10' name='Beschreibung'>
+		<td width ="240" colspan="2">
+		<textarea cols="36" rows="10" name="Beschreibung">
 		</textarea>
 		</td>
 
 	</tr>
-</table>
-
-
-<table border = 0>
 	<tr>
-		<td width='120'>
+		<td width="120">
 		<small>* optionale Felder</small>
 		</td>
 
-		<td width='120'>
-		<input type='submit'  value='OK' style='WIDTH:90' >
+		<td width="120">
+		<input type="submit"  value="OK" style="width:90" />
 		</td>
 
-		<td width='120' align='left'>
-		<input type='submit'  value='Abbrechen' style='WIDTH:90' >
+		<td width="120" align="left">
+		<input type="submit"  value="Abbrechen" style="width:90" />
 		</td>
 	</tr>
 </table>
 </form>
+EOF;
+}
 
+function doUpload()
+{
+    //  Verzeichniseintrag holen
+    $path = new Path;
+    if (!$path->selectByName($_SESSION["path"])) {
+        fehlerausgabe("Kann nicht hochladen: Verzeichnis existiert nicht");
+        die();
+    }
+
+    // ACL für das Verzeichnis holen
+    $acl = $_SESSION["user"]->getACLByPath($path->pathname);
+    if ($acl->write_path != "1") {
+        fehlerausgabe("Kann nicht hochladen: Zugriff verweigert");
+        die();
+    }
+
+
+    move_uploaded_file($_FILES["userfile"]["tmp_name"], "/place/to/put/uploaded/file");
 ?>
 
 <?php
@@ -190,9 +204,9 @@ if ($command == "ls") {
         $_SESSION["path"] = "/";
     }
     listCurrentPath();
-} else {
+} else if ($command == "upload") {
+    printUploadFile();
 }
-
 
 ?>
 

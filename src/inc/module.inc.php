@@ -19,7 +19,7 @@ class ModuleList {
         $query = "SELECT path_id, loginname, pathname, description, insert_at, modified_at, path_id_parent
                   FROM sage_path
                   WHERE path_id_parent = $id
-                  AND pathname NOT LIKE '/*"";
+                  AND pathname NOT LIKE '/*'";
 
         $paths = $dbq->db_select($query);
 
