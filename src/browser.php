@@ -85,8 +85,10 @@ if ($acl->read_path != "1") {
 printHeader();
 // Verzeichnisse listen
 $parent = new Path;
-if ($parent->selectById($path->path_id_parent)) {
-    printDirectoryEntry($parent, false);
+if ($path->path_id_parent != NULL) {
+    if ($parent->selectById($path->path_id_parent)) {
+        printDirectoryEntry($parent, false);
+    }
 }
 
 $pathlist = new PathList;

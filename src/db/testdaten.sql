@@ -1,22 +1,26 @@
 insert into sage_address_type (description) values ('Privat Adresse');
 insert into sage_address_type (description) values ('Geschäftliche Adresse');
 
-insert into sage_user (loginname,password,firstname,surname) values ('kf0fhomer','','Homer','Simpson');
-insert into sage_user (loginname,password,firstname,surname) values ('kf0flisa','','Lisa','Simpson');
-insert into sage_user (loginname,password,firstname,surname) values ('kf0fmaggie','','Maggie','Simpson');
-insert into sage_user (loginname,password,description,firstname,surname,user_id_parent) values ('kf0fbart','','Hasst Homer und Schule','Bart','Simpson',2);
+insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (1, '@root','','admin','group', '@root', NULL);
+insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (2, 'kf0fhomer','$1$nXrb36T2$kOXNi6itV4p8EpISmiFfB0','Homer','Simpson', 'Superuser...juhu!', 1);
+insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (3, '@kf0f','','kf0f','group', '@kf0f', NULL);
+insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (4, 'kf0flisa','','Lisa','Simpson', '', 3);
+insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (5, 'kf0fmaggie','','Maggie','Simpson', '', 3);
+insert into sage_user (user_id, loginname,password,firstname,surname, description,user_id_parent) values (6, 'kf0fbart','Hasst Homer und Schule','Bart','Simpson','',3);
 
-insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (1,1,'1','0','1');
-insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (1,2,'0','1','1');
-insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (1,3,'1','1','1');
-insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (2,1,'0','0','1');
-insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (3,1,'0','1','1');
-insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (3,3,'1','0','1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 1, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 2, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 3, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(1, 4, '1', '1', '1', '1', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 1, '0', '0', '1', '0', '0', '0', '0', '0');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 2, '0', '1', '1', '0', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 3, '0', '0', '1', '0', '1', '1', '1', '1');
+insert into sage_acl (user_id, path_id, delete_path, write_path, read_path, rename_path, read_file, write_file, delete_file, rename_file) values(3, 4, '0', '1', '1', '0', '1', '1', '1', '1');
 
 insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (1,'kf0fhomer','/','root','4.4.2002', NULL);
-insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (2,'kf0fhomer','/KF0F','Ordner der Klasse KF0F','4.4.2002', 1);
-insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (3,'kf0fbart','/KF04','Ordner der Klasse KF04','14.12.2001', 1);
-insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (4,'kf0fhomer','/AUSTAUSCH','Austauschordner fuer alle ','1.1.1999', 1);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (2,'kf0fhomer','/kf0f','Ordner der Klasse KF0F','4.4.2002', 1);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (3,'kf0fbart','/kf04','Ordner der Klasse KF04','14.12.2001', 1);
+insert into sage_path (path_id,loginname,pathname,description,insert_at, path_id_parent) values (4,'kf0fhomer','/austausch','Austauschordner fuer alle ','1.1.1999', 1);
 
 insert into sage_user_calendar_map (user_id,calendar_id) values (1,1);
 insert into sage_user_calendar_map (user_id,calendar_id) values (1,3);
