@@ -1,0 +1,31 @@
+/* Relativ viel hier kommt aus dem GSO - Stylesheet */
+body,td,th,p,h1,h2,h3,h4,h5,h6,div, ul,ol,li
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+
+body
+{
+	margin: 0pt;
+	padding: 0pt;
+	background-color: #EDE9E4;
+}
+
+td, th, body {
+	font-size : 10pt;
+}
+
+h2
+{
+	/*font-size: smaller;*/
+}
+
+
+td.table {
+	background-color : Silver;
+}
+
+th.table {
+	background-color: #CAA778;
+}
