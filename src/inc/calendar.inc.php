@@ -337,8 +337,9 @@ function getMeetings($d,$m,$y,$id) {
     // liefert alle Termine an einem bestimmten Tag
     function viewDay($d,$m,$y,$id) {
        $this->getMeetings($d,$m,$y,$id);
+       $me = $_SERVER["PHP_SELF"];
 
-      echo "<a href=\"$PHP_SELF?action=addNew&d=$d&m=$m&y=$y\">neuer Termin</a><br>";
+      echo "<a href=\"$me?action=addNew&d=$d&m=$m&y=$y\">neuer Termin</a><br>";
       echo "<a href=\"$HTTP_REFERER?d=$d&m=$m&y=$y\">zur&uuml;ck</a>";
 
    }
