@@ -5,9 +5,9 @@
 <table width="100%" border="0" bordercolor="#CCCCCC">
   <tr bordercolor="0"> 
     <td height="21" align="center"> 
-      <?PHP 
+      <?php
 	    echo date("d M Y h:i:s a");
-	  ?>
+      ?>
     </td>
   </tr>
 </table>
