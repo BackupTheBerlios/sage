@@ -1,20 +1,17 @@
-<?PHP
-/*Variablen Deklaration*/
+<?php
+     //Page-Name
+     $PageName="SAGE-Home";
 
-//Page-Name
-$PageName="SAGE";
+     /*Der Header wird mit eingebunden*/
+     require_once "inc/header.inc.php";
 
-/*Der Header wird mit eingebunden*/
-require "inc/header.inc";
-?>
+     /*Die Navigationsleiste wird mit eingebunden*/
+     require_once "inc/leftnav.inc.php";
+     
+     /*Ab hier der Hauptteil*/
+     require_once "inc/fehlerausgabe.inc.php";
+     fehlerausgabe("Fehler Bei der Eingabe");
 
-<?PHP
-/*Ab hier der Hauptteil*/
-?>
-
-
-
-<?PHP
-/*Der Rumpf wird mit eingebunden*/
-require "inc/footer.inc";
+     /*Der Rumpf wird mit eingebunden*/
+     require_once "inc/footer.inc.php";
 ?>

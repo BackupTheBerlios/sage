@@ -1,27 +1,22 @@
-<?PHP
-/*Variablen Deklaration*/
-
-//Page-Name
-$PageName="SAGE";
-
-/*Der Header wird mit eingebunden*/
-require "inc/header.inc";
+<?php
+     /*Variablen Deklaration*/
+     $PageName="Notiz erstellen";
+     require_once "inc/header.inc.php";
+     require_once "inc/leftnav.inc.php";
 ?>
 
-<?PHP
-/*Ab hier der Hauptteil*/
-?>
+<!-- Hauptteil -->
 
 <html>
 <body bgcolor="#FFFFFF" text="#000000">
 <form name="form1" method="post" action="">
   <h1><u>Notiz erstellen</u></h1>
   <h1>&nbsp;</h1>
-  <h1> 
+  <h1>
     <textarea name="textfield" cols="50">Type in ... </textarea>
   </h1>
   <p>&nbsp;</p>
-  <p> 
+  <p>
     <input type="submit" name="OK" value="Okay">
     <input type="submit" name="Abbrechen" value="Abbrechen">
   </p>
@@ -30,7 +25,7 @@ require "inc/header.inc";
 </body>
 </html>
 
-<?PHP
-/*Der Rumpf wird mit eingebunden*/
-require "inc/footer.inc";
+<?php
+     /*Der Rumpf wird mit eingebunden*/
+     require_once "inc/footer.inc.php";
 ?>
