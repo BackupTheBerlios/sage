@@ -1,27 +1,30 @@
-<?php
+<?PHP
 //Dies Stellt den Header dar !!
 ?>
 
 
 <html>
 <head>
-<title><?php echo $PageName; ?></title>
+<title><?PHP echo $PageName; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
 <body bgcolor="#FFFFFF" text="#000000">
-<p><h1>
-<?php echo $PageName; ?>
-</h1></p>
-<p>Angemeldet als: <?php echo $_SESSION["user"]->loginname; ?></p>
+<p> 
+  
+</p>
 <p>&nbsp;</p>
 <hr>
-<table width="100%" border="0" cellspacing="5" cellpadding="10">
-  <tr> 
-    <td bgcolor="#CCCCCC" width="30%" nowrap valign="top">
+<table width="100%" border="0" cellspacing="5" cellpadding="10" style="table-layout:fixed">
+  <tr>  
+    <td bgcolor="#CCCCCC" nowrap valign="top" style="width:20%">
       <div align="center"><u>Menü</u></div><br>
-      <div align="center"><a href="test.php">Notiz erstellen</a></div><br>
-      <div align="center"><a href="test1.php">Notiz erstellen</a></div><br>
-      <div align="center"><a href="test2.php">Notiz erstellen</a></div><br>
+
+	<?PHP
+		require "verzeichniss.php";
+		$obergrenze=count($linkArray);
+		for($a=0;$a<$obergrenze;$a++)
+			echo "$linkArray[$a]";
+	?>
     </td>
-    <td width="70%" nowrap>
+    <td nowrap style="width:80%">
