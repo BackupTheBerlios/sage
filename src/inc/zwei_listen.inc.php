@@ -5,6 +5,10 @@
       session_register(RechtesArray);
       session_register(LinkesArray);
 
+      //CSS zur Formatierung der Breite der Listen
+      echo"<style type='text/css'>
+            select {width='150';}
+           </style>";
 
 //Beschreibt den Aufbau der rechten Liste, bekommt als Parameter die beiden Ereignisse die
 //sich aus den beiden Buttons ergeben.
@@ -64,7 +68,7 @@ function rechts($LinksRechts, $RechtsLinks)
 function links()
 {
         global $LinkesArray;
-	echo"<select name='AlleRechte' size='10' >";
+	echo"<select name='AlleRechte' size='10'>";
    	$LinkesArray=rechte();
 
 	$zaehler=count($LinkesArray);
