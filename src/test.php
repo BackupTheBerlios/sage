@@ -1,4 +1,4 @@
-<?php
+<?PHP
 /*Variablen Deklaration*/
 
 //Page-Name
@@ -8,7 +8,7 @@ $PageName="SAGE";
 require "inc/header.inc";
 ?>
 
-<?php
+<?PHP
 /*Ab hier der Hauptteil*/
 ?>
 
@@ -18,7 +18,7 @@ require "inc/header.inc";
   <h1><u>Notiz erstellen</u></h1>
   <h1>&nbsp;</h1>
   <h1> 
-    <textarea name="textfield" cols="100">Type in ... </textarea>
+    <textarea name="textfield" cols="50">Type in ... </textarea>
   </h1>
   <p>&nbsp;</p>
   <p> 
@@ -30,7 +30,7 @@ require "inc/header.inc";
 </body>
 </html>
 
-<?php
+<?PHP
 /*Der Rumpf wird mit eingebunden*/
 require "inc/footer.inc";
 ?>

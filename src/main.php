@@ -1,4 +1,4 @@
-<?php
+<?PHP
 /*Variablen Deklaration*/
 
 //Page-Name
@@ -8,13 +8,13 @@ $PageName="SAGE";
 require "inc/header.inc";
 ?>
 
-<?php
+<?PHP
 /*Ab hier der Hauptteil*/
 ?>
 
 
 
-<?php
+<?PHP
 /*Der Rumpf wird mit eingebunden*/
 require "inc/footer.inc";
 ?>

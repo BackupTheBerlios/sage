@@ -5,7 +5,7 @@
 
 <html>
 <head>
-<title><?PHP echo $PageName; ?></title>
+<title><?php echo $PageName; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
@@ -21,7 +21,7 @@
       <div align="center"><u>Menü</u></div><br>
 
 	<?PHP
-		require "verzeichniss.php";
+		require "verzeichniss.inc";
 		$obergrenze=count($linkArray);
 		for($a=0;$a<$obergrenze;$a++)
 			echo "$linkArray[$a]";

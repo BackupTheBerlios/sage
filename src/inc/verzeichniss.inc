@@ -1,5 +1,3 @@
-<?php
-
 require "mysql_class.inc";
 
 $linkRechteListe=array(
@@ -36,5 +34,3 @@ for($b=0;$b<$zaeh;$b++){
     $zahl=$linkArray[$b];
     $linkArray[$b]=$linkRechteListe[$zahl];
 }
-
-?>
