@@ -18,7 +18,7 @@ CREATE TABLE sage_user (
    e_mail            VARCHAR(40),
    user_id_parent    INT  NULL,
    PRIMARY KEY (user_id),
-   INDEX sage_user$loginname (loginname),
+   UNIQUE sage_user$loginname (loginname),
    INDEX sage_user$user_id_parent (user_id_parent)
    )
    COMMENT = "Zentrale Tabelle zur Userverwaltung"
@@ -35,14 +35,15 @@ CREATE TABLE sage_user_calendar_map (
 
 -- erstelle sage_calendar
 CREATE TABLE sage_calendar (
-   calendar_id       INT     NOT NULL auto_increment,
-   initiator          INT     NOT NULL,
-   date              DATE    NOT NULL,
-   begin             TIME    NOT NULL,
-   duration          TINYINT NOT NULL,
-   description       text    NOT NULL,
-   place             text    NOT NULL,
-   PRIMARY KEY (calendar_id)
+   calendar_id       INT            NOT NULL auto_increment,
+   initiator         INT            NOT NULL,
+   date              DATE           NOT NULL,
+   begin             TIME           NOT NULL,
+   duration          TINYINT        NOT NULL,
+   description       VARCHAR(255)   NOT NULL,
+   place             VARCHAR(255)   NOT NULL,
+   PRIMARY KEY (calendar_id),
+   INDEX sage_calendar$initiator (initiator)
    )
    COMMENT = "Kalender eines jeden Users"
    ; 
@@ -51,7 +52,7 @@ CREATE TABLE sage_calendar (
 CREATE TABLE sage_acl (
    acl_id      INT          NOT NULL auto_increment,
    user_id     INT          NOT NULL,
-   path        VARCHAR(255) NOT NULL,
+   path_id     INT          NOT NULL,
    delete_path SET('0','1') NOT NULL DEFAULT '0',
    write_path  SET('0','1') NOT NULL DEFAULT '0',
    read_path   SET('0','1') NOT NULL DEFAULT '0',
@@ -61,7 +62,8 @@ CREATE TABLE sage_acl (
    delete_file SET('0','1') NOT NULL DEFAULT '0',
    rename_file SET('0','1') NOT NULL DEFAULT '0',
    PRIMARY KEY (acl_id),
-   INDEX sage_acl$acl_id (acl_id)
+   INDEX sage_acl$user_id (user_id),
+   INDEX sage_acl$path_id (path_id)
    )
    COMMENT = "Tabelle fuer die Rechteverwaltung"
    ;
@@ -152,5 +154,37 @@ CREATE TABLE sage_dm_version (
    )
    COMMENT = "Tabelle mit der Datenmodellversion"
    ;
+-- erstelle sage_files
+CREATE TABLE sage_files (
+   file_id           INT          NOT NULL auto_increment,
+   path_id           INT          NOT NULL,
+   loginname         VARCHAR(40)  NOT NULL,
+   filename          VARCHAR(255) NOT NULL,
+   description       VARCHAR(255) NOT NULL,
+   insert_at         DATE         NOT NULL,
+   modified_at       DATE         NULL,
+   PRIMARY KEY (file_id),
+   INDEX sage_files$path_id (path_id),
+   INDEX sage_files$loginname (loginname)
+   )
+   COMMENT = "Tabelle fuer die Zuordnung von Dateien zu Verzeichnissen auf dem Dateisystem"
+   ;
+   
+-- erstelle sage_path
+CREATE TABLE sage_path (
+   path_id           INT          NOT NULL auto_increment,
+   loginname         VARCHAR(40)  NOT NULL,
+   pathname          VARCHAR(255) NOT NULL,
+   description       VARCHAR(255) NOT NULL,
+   insert_at         DATE         NOT NULL,
+   modified_at       DATE         NULL,
+   PRIMARY KEY (path_id),
+   INDEX sage_path$loginname (loginname)
+   )
+   COMMENT = "Tabelle fuer die Zuordnung von Verzeichnissen zu Usern und zu deren Rechten an dem Verzeichnis"
+   ;
+   
 -- fuegt die aktuelle Datenmodellversion ein
 insert into sage_dm_version (datamodel_version) values ('1.0.0-1');
+
+-- End Script
