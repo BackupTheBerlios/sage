@@ -8,10 +8,21 @@ require_once("inc/fehlerausgabe.inc.php");
 
 function printHeader()
 {
-    echo <<<EOF
+    $me = $_SERVER["PHP_SELF"];
 
+    echo <<<EOF
+<form name="Browser" action="$me" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed">
     <tr>
+        <td colspan="5" nowrap="nowrap" valign="top">
+            <a href="$me?cmd=upload">Datei hochladen</a>
+            <input type="submit" value="Datei l&ouml;schen" />
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
+            X
+        </td>
         <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
             Name
         </td>
@@ -32,9 +43,9 @@ function printDirectoryEntry(&$path, $isFile)
 {
     if ($isFile) {
         $me = $_SERVER["PHP_SELF"];
-        echo ("<tr>");
+        echo("<tr>");
+        echo("<td><input type=\"checkbox\" name=\"filename\" value=\"$path->filename\" />");
         echo("<td><img src=\"icons/binary.gif\" alt=\"[file]\" />");
-
         echo("<a href=\"$me?cmd=open&path=$path->filename\">$path->filename</a></td>\n");
         echo("<td>$path->loginname</td>");
         echo("<td>$path->description</td>");
@@ -45,6 +56,7 @@ function printDirectoryEntry(&$path, $isFile)
     } else {
         $me = $_SERVER["PHP_SELF"];
         echo ("<tr>");
+        echo("<td><input type=\"checkbox\" name=\"pathname\" value=\"$path->pathname\" />");
         echo("<td><img src=\"icons/dir.gif\" alt=\"[dir]\" />");
 
         echo("<a href=\"$me?cmd=ls&path=$path->pathname\">$path->pathname</a></td>\n");
@@ -57,7 +69,8 @@ function printDirectoryEntry(&$path, $isFile)
 
 function printFooter()
 {
-    echo ("</table>");
+    echo("</table>");
+    echo("</form>");
 }
 
 function listCurrentPath()
@@ -104,7 +117,6 @@ function listCurrentPath()
         printDirectoryEntry($filelist->list[$i], true);
     }
 
-
     printFooter();
 }
 
@@ -124,11 +136,7 @@ function printUploadFile()
 		<b>Lokale Datei:</b>
 		</td>
 
-		<td width="120">
-		<input name="LokaleDatei" size="25" />
-		</td>
-
-		<td width="120" align="right">
+		<td colspan="2" width="120" align="right">
 		<input type="file" name="userfile" />
 		</td>
 	</tr>
@@ -148,8 +156,7 @@ function printUploadFile()
 		</td>
 
 		<td width="240" colspan="2">
-		<textarea cols="36" rows="10" name="Beschreibung">
-		</textarea>
+		<textarea cols="36" rows="10" name="Beschreibung"></textarea>
 		</td>
 
 	</tr>
@@ -173,6 +180,7 @@ EOF;
 
 function doUpload()
 {
+    global $sage_data_dir;
     //  Verzeichniseintrag holen
     $path = new Path;
     if (!$path->selectByName($_SESSION["path"])) {
@@ -193,8 +201,20 @@ function doUpload()
         die();
     }
 
-    move_uploaded_file($_FILES["userfile"]["tmp_name"], $sage_data_dir.$path->pathname.$_REQUEST["DateiName"]);
-    listCurrentPath();
+
+    $file->path_id = $path->path_id;
+    $file->loginname = $_SESSION["user"]->loginname;
+    $file->filename = $_REQUEST["DateiName"];
+    $file->description = $_REQUEST["Beschreibung"];
+    $file->insert_at = "NOW()";
+    $file->modified_at = "NOW()";
+    if ($file->insert()) {
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], $sage_data_dir.$path->pathname."/".$_REQUEST["DateiName"]);
+        listCurrentPath();
+    } else {
+        fehlerausgabe("Kann nicht hochladen: Einf&uumlgen in Datenbank fehlgeschlagen");
+        die();
+    }
 }
 ?>
 
@@ -214,6 +234,8 @@ if ($command == "ls") {
     listCurrentPath();
 } else if ($command == "upload") {
     printUploadFile();
+} else if ($command == "doupload") {
+    doUpload();
 }
 
 ?>

@@ -29,8 +29,6 @@ class DB
    function db_select($select){
       $rueck = array();
 
-      echo($select."<br />");
-
       if(!$this->conn_id)
 		$this->conn_id = $this->db_connect();
       $result = mysql_query("$select", $this->conn_id);
@@ -38,6 +36,16 @@ class DB
          $rueck[]=$row;
       }
       return $rueck;
+   }
+
+    function db_insert($insert){
+      if(!$this->conn_id)
+		$this->conn_id = $this->db_connect();
+      $result = mysql_query("$insert", $this->conn_id);
+      if ($result){
+         return true;
+      }
+      return false;
    }
 
    function db_select_rechte($select){

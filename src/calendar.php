@@ -1,7 +1,7 @@
 <?php
 require_once("inc/functions.inc.php");
 
-$pagename = "Inhalt";
+$pagename = "Kalender";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
 ?>

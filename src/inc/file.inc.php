@@ -19,7 +19,7 @@ class File
         $dbq->db_connect();
 
         $query = "SELECT file_id, path_id, loginname, filename, description, insert_at, modified_at
-                  FROM sage_file
+                  FROM sage_files
                   WHERE file_id = $id";
 
         $result = $dbq->db_select($query);
@@ -36,8 +36,8 @@ class File
         $dbq->db_connect();
 
         $query = "SELECT file_id, path_id, loginname, filename, description, insert_at, modified_at
-                  FROM sage_file
-                  WHERE path_id = $id
+                  FROM sage_files
+                  WHERE path_id = $path_id
                   AND filename = '$name'";
 
         $result = $dbq->db_select($query);
@@ -48,6 +48,19 @@ class File
         return true;
     }
 
+    function insert()
+    {
+        $dbq = new DB;
+        $dbq->db_connect();
+
+        $query = "INSERT INTO sage_files(path_id, loginname, filename, description, insert_at, modified_at)
+                  VALUES($this->path_id, '$this->loginname', '$this->filename',
+                         '$this->description', $this->insert_at, $this->modified_at)";
+
+        echo ($query);
+        if (!$dbq->db_insert($query)) return false;
+        return true;
+    }
 
     function initializeFromRow($row)
     {
@@ -76,7 +89,7 @@ class FileList {
         $dbq->db_connect();
 
         $query = "SELECT file_id, path_id, loginname, filename, description, insert_at, modified_at
-                  FROM sage_file
+                  FROM sage_files
                   WHERE path_id = $id";
 
         $files = $dbq->db_select($query);
