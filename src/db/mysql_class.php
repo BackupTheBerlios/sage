@@ -21,7 +21,7 @@ class DB
    function db_close()
    {
       $close = mysql_close($this->conn_id);
-      $return true;
+      return true;
    }
    
    // fuehr die Abfragen aus
