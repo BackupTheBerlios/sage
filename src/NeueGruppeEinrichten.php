@@ -1,6 +1,7 @@
 <?php
-          
-      include_once("zwei_listen.inc.php");
+      
+      include_once("inc/zwei_listen.inc.php");
+      
       
 echo"
 	<form method='POST' action='NeueGruppeEinrichten.php'>
@@ -14,7 +15,7 @@ echo"
 				</td>
 
 				<td>
-				<input type='text' name='GruppenName'>
+				<input type='text' name='GruppenName' size='30'>
 				</td>
 			</tr>
 		</table>
@@ -43,9 +44,9 @@ echo"
 				</td>
 
 				<td>
-				<input type='submit' name='LinksRechts' value='>>'>
+				<input type='submit' name='LinksRechts' value='>>' \>
 				<br>
-				<input type='submit' name='RechtsLinks' value='<<'>
+				<input type='submit' name='RechtsLinks' value='<<' \>
 				</td>
 
 				<td>

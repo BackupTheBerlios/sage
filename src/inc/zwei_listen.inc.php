@@ -6,9 +6,7 @@
       session_register(LinkesArray);
 
       //CSS zur Formatierung der Breite der Listen
-      echo"<style type='text/css'>
-            select {width='150';}
-           </style>";
+      echo("<style type='text/css'> select {width='150';}</style>");
 
 //Beschreibt den Aufbau der rechten Liste, bekommt als Parameter die beiden Ereignisse die
 //sich aus den beiden Buttons ergeben.
@@ -19,7 +17,7 @@ function rechts($LinksRechts, $RechtsLinks)
      global $AlleRechte;
      global $GewRechte;
 
-         echo"<select name='GewRechte' size='10'>";
+         echo("<select name='GewRechte' size='10'>");
 
          if ($LinksRechts)
          {
@@ -37,9 +35,9 @@ function rechts($LinksRechts, $RechtsLinks)
 
               for ($i=0; $i < $Anzahl; $i++)
               {
-               echo "<option>$RechtesArray[$i]</option>";
+               echo("<option>$RechtesArray[$i]</option>");
               }
-         echo"</select>";
+         echo("</select>");
          }
 
 
@@ -57,10 +55,10 @@ function rechts($LinksRechts, $RechtsLinks)
 
               for ($i=0; $i < $Anzahl; $i++)
               {
-               echo "<option>$RechtesArray[$i]</option>";
+               echo("<option>$RechtesArray[$i]</option>");
               }
 
-       echo"</select>";
+       echo("</select>");
        }
 
 }
@@ -68,16 +66,16 @@ function rechts($LinksRechts, $RechtsLinks)
 function links()
 {
         global $LinkesArray;
-	echo"<select name='AlleRechte' size='10'>";
+	echo("<select name='AlleRechte' size='10'>");
    	$LinkesArray=rechte();
 
 	$zaehler=count($LinkesArray);
 
 	for($i=0;$i<$zaehler;$i++)
 	{
-          echo"<option>$LinkesArray[$i]</option>";
+          echo("<option>$LinkesArray[$i]</option>");
         }
-	echo"</select>";
+	echo("</select>");
 
 }
 
