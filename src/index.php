@@ -4,7 +4,7 @@ if (!loggedIn()) setupSession();
 
 require_once("config.inc");
 
-$PageName = "inhalt...";
+$PageName = "Index";
 require("header.inc");
 
 echo "<p>Dies ist Sage, Version $sage_version.</p>";

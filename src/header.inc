@@ -10,9 +10,10 @@
 </head>
 
 <body bgcolor="#FFFFFF" text="#000000">
-<p> 
-  
-</p>
+<p><h1>
+<?php echo $PageName; ?>
+</h1></p>
+<p>Angemeldet als: <?php echo $_SESSION["user"]->loginname; ?></p>
 <p>&nbsp;</p>
 <hr>
 <table width="100%" border="0" cellspacing="5" cellpadding="10">

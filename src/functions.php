@@ -1,5 +1,7 @@
 <?php
 require_once("config.inc");
+require_once("db/mysql_class.php");
+require_once("user.inc");
 
 // ------------------------------- //
 // thx to chamele0n.1@email.com    //
@@ -30,13 +32,21 @@ function handleMySQLError()
     echo "MySQL error: $error()";
 }
 
+function doLogin($username)
+{
+    $usr = new User;
+    if ($usr->selectByName($username) == false) die("No such user in DB");
+    if ($usr->password != crypt($_SERVER["PHP_AUTH_PW"], $usr->password)) die ("Wrong password");
+    
+    $_SESSION["user"] = $usr;
+}
 function setupSession()
 {
     session_start();
     if (!isset($_SERVER["PHP_AUTH_USER"]) )
-    	die("not authorized");
-    $_SESSION["user"] = $_SERVER["PHP_AUTH_USER"];
-    $_SESSION["pass"] = $_SERVER["PHP_AUTH_PW"];
+    	die("Not authorized by HTTP server");
+    	
+    doLogin($_SERVER["PHP_AUTH_USER"]);
 }
 
 function loggedIn()
@@ -47,49 +57,11 @@ function loggedIn()
     return 0;
 }
 
-function destroySession()
+function doLogout()
 {
     session_start();
     unset($_SESSION["user"]);
     unset($_SESSION["pass"]);
-}
-
-function printInhalt()
-{
-    global $db_hostname, $db_user, $db_password, $db_db;
-    
-    $link = mysql_pconnect($db_hostname, $db_user, $db_password)
-    	    or die("keine db da");
-    
-    mysql_select_db($db_db) or die("der db-name stimmt nicht!");
-    
-    $query = "SELECT entry.name as name, poster as pname, category.name as cname, added"
-    	     ." FROM entry, category"
-	     ." WHERE category_id=category.id";
-    
-    $result = mysql_query($query) 
-    	      or die("fehler in der abfrage!");
-    
-    echo '<table width="100%" border="0">';
-    echo '<tr height="2" bgcolor="#000000"><td colspan="4"></td></tr>';
-    echo '<tr><td>name...</td><td>poster...</td><td>kategorie...</td><td>added</td>';
-    echo '<tr height="2" bgcolor="#000000"><td colspan="4"></td></tr>';
-    
-    while ($tupel = mysql_fetch_assoc($result)) {
-    	$name = $tupel["name"];
-	$pname = $tupel["pname"];
-	$cname = $tupel["cname"];
-	$added = $tupel["added"];
-	
-    	echo "<tr>";
-	echo "<td>$name</td>";
-	echo "<td>$pname</td>";
-	echo "<td>$cname</td>";
-	echo "<td>$added</td>";	
-	echo "</tr>";
-    }
-    
-    echo "</table>";
 }
 
 ?>
