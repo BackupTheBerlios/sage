@@ -6,6 +6,7 @@ require_once("inc/config.inc.php");
 
 $PageName = "Index";
 require("inc/header.inc.php");
+require("inc/leftnav.inc.php");
 
 echo "<p>Dies ist Sage, Version $sage_version.</p>";
 ?>

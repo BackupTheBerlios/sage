@@ -27,6 +27,8 @@ class DB
    // fuehr die Abfragen aus
    // rueckgabewert ist ein Array von Objekten
    function db_select($select){
+      $rueck = array();
+
       if(!$this->conn_id)
 		$this->conn_id = $this->db_connect();
       $result = mysql_query("$select", $this->conn_id);

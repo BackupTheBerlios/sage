@@ -1,5 +1,6 @@
 <?php
 require_once("mysql_class.inc.php");
+require_once("acl.inc.php");
 
 
 class User
@@ -31,7 +32,7 @@ class User
         $result = $dbq->db_select($query);
         if (count($result) == 0) return false;
 
-        initializeFromRow($result[0]);
+        $this->initializeFromRow($result[0]);
 
         return true;
     }
@@ -70,9 +71,9 @@ class User
     function getACLByPath($path)
     {
         $done       = false;
-        $acllist    = new aclcoll;
+        $acllist    = new ACLList;
         $curacls    = array();
-        $retacl     = 0;
+        $retacl     = new ACL;
 
         $currentUserId = $this->user_id;
 
@@ -82,13 +83,15 @@ class User
             if (!$currentUser->selectById($currentUserId)) {
                 $done = true;
             } else {
-                $curacls = $acllist->selectByUserIdAndPath($currentUser->user_id, $path);
+                if ($acllist->selectByUserIdAndPath($currentUser->user_id, $path)) {
+                    $curacls = $acllist->list;
+                }
 
                 if (count($curacls) == 0) {
                     $currentUserId = $currentUser->user_id_parent;
                 } else {
                     $done = true;
-                    $retacl = $curacls[0];
+                    $retacl->initializeFromRow($curacls[0]);
                 }
             }
         }
