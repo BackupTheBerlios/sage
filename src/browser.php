@@ -522,6 +522,26 @@ function doMkDir()
 
 }
 
+function handleChacl($path, $subcmd)
+{
+    $cmd = $subcmd;
+    if ("" == $cmd) $cmd = "list";
+
+    if ("list" == $cmd) {
+        return listACLsByPath($path);
+    } else if ("del" == $cmd) {
+        $aclids = @$_POST["aclid"];
+        if ( (!is_array($aclids)) || (!isset($aclids[0])) || $aclids[0] == "" ) {
+            echo("Bitte w&auml;hlen Sie eine ACL zum L&ouml;schen aus.");
+            return listACLsByPath($path);
+        } else {
+            deleteACL($aclids[0]);
+        }
+    }
+
+    return true;
+}
+
 $PageName = "Browser";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
@@ -552,12 +572,12 @@ if ($command == "ls") {
 } else if ($command == "domkdir") {
     doMkDir();
 }  else if ($command == "chacl") {
-    $path = $_POST["pathname"];
+    $path = @$_POST["pathname"];
     if ( (!is_array($path)) || (!isset($path[0])) || $path[0] == "" ) {
         echo("Bitte w&auml;hlen Sie ein Verzeichnis aus, dessen ACL Sie editieren wollen");
         listCurrentPath();
     } else {
-        listACLsByPath($path[0]);
+        handleChacl(@$_POST["pathname"][0], @$_POST["subcmd"]);
     }
 } else {
     listCurrentPath();

@@ -19,7 +19,7 @@ function listACLsByPath($pathname)
     $me = $_SERVER["PHP_SELF"];
 
     if (!canEdit($pathname)) {
-        echo("Ihnen fehlt leider die Berechtigung, dieses Verzeichnis zu bearbeiten");
+        echo("Ihnen fehlt leider die Berechtigung, das Verzeichnis $pathname zu bearbeiten");
         return false;
     }
 
@@ -42,9 +42,10 @@ function listACLsByPath($pathname)
 <form name="acleditor" method="post" action="$me">
 <select name="cmd">
     <option value="edit">Eine ACL bearbeiten</option>
-    <option value="edit">L&ouml;schen</option>
+    <option value="del">L&ouml;schen</option>
 </select>
-<input type="submit" value="Los!" />
+<input type="hidden" name="pathname" value="$pathname" />
+<input type="submit" value="Los" />
 <br />
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed">
     <tr>
@@ -80,4 +81,38 @@ EOF;
 
     return true;
 }
+
+function editACL($aclid, $delete, $write, $read, $rename)
+{
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "UPDATE sage_acl
+              SET delete_path = '$delete', write_path = '$write', read_path = '$read', rename_path = '$rename'
+              WHERE acl_id = $aclid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte die ACL nicht updaten.");
+        die();
+    }
+}
+
+function deleteACL($aclid)
+{
+    $dbq = new DB;
+    $dbq->db_connect();
+
+    $query = "DELETE FROM sage_acl
+              WHERE acl_id = $aclid";
+
+    // db_insert gibt ein boolean zurück
+    $result = $dbq->db_insert($query);
+    if (!$result) {
+        fehlerausgabe("Konnte die ACL nicht l&ouml;schen.");
+        die();
+    }
+}
+
 ?>
