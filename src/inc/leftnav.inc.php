@@ -31,7 +31,8 @@
 
       <div align="center"><a href="index.php" style="color: #CAA778;">Home</a></div><br />
     </td>
-    <td nowrap="nowrap" style="width:80%" valign="top">
+    <!--- <td nowrap="nowrap" style="width:80%" valign="top"> -->
+    <td style="width:80%" valign="top">
 
     <?php
        /*
