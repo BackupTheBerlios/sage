@@ -27,7 +27,7 @@
       ?>
 
 
-      <div align="center"><a href="main.php">Home</a></div><br />
+      <div align="center"><a href="index.php">Home</a></div><br />
     </td>
     <td nowrap style="width:80%">
 
