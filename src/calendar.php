@@ -1,80 +1,42 @@
 <?php
-require_once("inc/functions.inc.php");
+require_once("inc/functions.inc");
 
-$pagename = "Kalender";
-require("inc/header.inc.php");
-require("inc/leftnav.inc.php");
+$PageName = "Kalender";
+require("inc/header.inc");
 ?>
 
 <?php
+$id=1;
 require_once("inc/calendar.inc.php");
 
 // wenn noch nichts uebergeben wurde
 if (empty($m)) $m = date("n");
 if (empty($y)) $y = date("Y");
-
-
+if (empty($d)) $d = date("d");
 $cal = new Calendar;
 
-if ($m>12) echo "Fehler!!! Kein G&uuml;tiger Monat";
+if ($m>12) echo "Fehler!!! Kein g&uuml;ltiger Monat";
+elseif($y>=(date("Y")+9)) echo "Zu hohes Datum";
+elseif($y<=(date("Y")-9)) echo "Zu geringes Datum";
+elseif($d>31 || $d<1) echo "kein g&uuml;ltiger Tag";
+
 else
     switch ($action) {
-        case addNew : addMeeting();
+        case addNew : $cal->addMeeting($d,$m,$y);
+                      echo "$d - $m - $y";
                       break;
-        case viewDay: viewDay($d,$m,$y);
+        case viewDay: $cal->viewDay($d,$m,$y,$id);
                       break;
-        default : $cal->display($m,$y);
+        case getAll:  $cal->getAllMeetings($id);
+                      break;
+        case insertDB: echo $date;
+                       $date = explode(".",$date);
+                       $cal->insertDB($date[0],$date[1],$date[2],$begin,$duration,$place,$description,$persons,$id);
+                       break;
+        default : $cal->display($m,$y,$id);
     };
-
-function getMeetings($d,$m,$y) {
-   global $cal;
-   $datum = "$y-$m-$d";
-   $meet = $cal->selectByID(1,$datum);
-   for ($i=0;$i<sizeof($meet);$i++) {
-
-    $date = explode("-",$meet[$i]->date);
-    $begin = explode(":",$meet[$i]->begin);
-    $begin = "$begin[0]:$begin[1]";
-
-    $date = $date[year];
-    $end   = $meet[$i]->duration;
-    $place = $meet[$i]->place;
-    $description = $meet[$i]->description;
-    $anz=$i+1;
-    echo "\n<table border=1>\n";
-    echo "<tr><td colspan=2>$anz. Termin</td></tr>";
-    echo "<tr><td>Beginn</td><td>$begin</td></tr>\n";
-    echo "<tr><td>Dauer</td><td>$end min</td></tr>\n";
-    echo "<tr><td>Ort</td><td>$place</td></tr>\n";
-    echo "<tr><td>Thema</td><td>$description&nbsp;</td></tr>\n";
-    echo "</table>\n\n";
-   }
-}
-
-function addMeeting() {
-   echo "<table border=1>";
-
-   echo "<form mehtod=\"POST\" action=\"$PHP_SELF\">";
-   echo "<tr><td>Beschreibung :</td><td>";
-   echo "<input type=text></input></tr>";
-   echo "<tr><td>Beginn :</td><td>";
-   echo "<input type=text></input></tr>";
-   echo "<tr><td>Dauer :</td><td>";
-   echo "<input type=text></input></tr>";
-   echo "</form>";
-   echo "<a href=\"$HTTP_REFERER?d=$d&m=$m&y=$y\">zur&uuml;ck</a>";
-}
-
-function viewDay($d,$m,$y) {
-   echo "Termine am $d.$m.$y<br>";
-   echo "<a href=\"$PHP_SELF?action=addNew&d=$d&m=$m&y=$y\">neuer Termin</a><br>";
-
-   getMeetings($d,$m,$y);
-   echo "<a href=\"$HTTP_REFERER?d=$d&m=$m&y=$y\">zur&uuml;ck</a>";
-
-}
 
 ?>
 <?php
-require("inc/footer.inc.php");
+require("inc/footer.inc");
 ?>
