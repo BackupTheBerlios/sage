@@ -139,7 +139,7 @@ function printUploadFile()
     $me = $_SERVER["PHP_SELF"];
     echo <<<EOF
 
-<h2>Datei hochladen</h2>
+<h2>Datei erstellen</h2>
 
 <form name="DateiSuchen" enctype="multipart/form-data" action="$me" method="post">
 <input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
@@ -166,7 +166,7 @@ function printUploadFile()
 
 	<tr>
 		<td width="120" valign="top">
-		<b>Beschreibung:*</b>
+		<b>Beschreibung/Textnotiz:*</b>
 		</td>
 
 		<td width="240" colspan="2">
@@ -196,6 +196,7 @@ function printMkDir()
 {
     $me = $_SERVER["PHP_SELF"];
     echo <<<EOF
+<h2>Ordner erstellen</h2>
 <form name="OrdnerName" method="post" action="$me">
 <input type="hidden" name="cmd" value="domkdir" />
 <table border = 0>
@@ -315,7 +316,7 @@ function confirmDelete()
 {
     $me = $_SERVER["PHP_SELF"];
 
-    echo("Folgende Dateien und Verzeichnisse l&ouml;schen?\n");
+    echo("Diese Dateien und Verzeichnisse wirklich l&ouml;schen?\n");
 
 
     echo("<form name=\"confirmDelete\" method=\"post\" action=\"$me\">");
@@ -338,7 +339,7 @@ function confirmDelete()
     }
 
     echo("</ul>");
-    echo("<input type=\"submit\" name=\"Ja\"/>\n");
+    echo("<input type=\"submit\" value=\"Ja\"/>\n");
     echo("</form>");
 
     $me = $_SERVER["PHP_SELF"];
@@ -373,10 +374,12 @@ function doDelete()
             fehlerausgabe("Kann $filename[$i] nicht löschen: Datenbankabfrage fehlgeschlagen");
             die();
         } else {
-            if (!unlink($sage_data_dir.$path->pathname."/".$filename[$i])) {
-                fehlerausgabe("Kann $filename[$i] nicht löschen: Dateisystem weigert sich");
-                die();
-            }
+            //
+            //if (!unlink($sage_data_dir.$path->pathname."/".$filename[$i])) {
+            //    fehlerausgabe("Kann $filename[$i] nicht löschen: Dateisystem weigert sich");
+            //    die();
+            //}
+            unlink($sage_data_dir.$path->pathname."/".$filename[$i]);
         }
     }
 
@@ -410,7 +413,7 @@ function doDelete()
     }
 
 
-    listCurrentPath();
+    redirectTo($_SERVER["PHP_SELF"]."?cmd=ls");
 }
 
 function doMkDir()

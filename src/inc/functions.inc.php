@@ -14,12 +14,12 @@ function redirectTo($newUrl)
 === 0 || strpos($newUrl, "https://") === 0))
   {
       $newUrl = "http"
-              . ($_SERVER['HTTPS'] == "on" ? "s" :
+              . (@$_SERVER['HTTPS'] == "on" ? "s" :
 "")
               . "://"
-              . $_SERVER['HTTP_HOST']
+              . @$_SERVER['HTTP_HOST']
               . (strpos($newUrl, "/") === 0? $newUrl :
-dirname($_SERVER['PHP_SELF']) . "/" . $newUrl);
+dirname(@$_SERVER['PHP_SELF']) . "/" . $newUrl);
   }
 
   header("Location: " . $newUrl);

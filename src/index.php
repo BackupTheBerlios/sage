@@ -10,7 +10,7 @@ require("inc/leftnav.inc.php");
 
 echo <<<EOF
 <p>Hallo, dies ist Sage, Version $sage_version.</p>
-Sage ist eine internetgest&uuml;tzte Groupware, die - im Rahmen eines Schulprojekts der <a href="http://www.gso-koeln.de">Georg-Simon-Ohm-Schule K&ouml;ln</a> - von f&uuml;nf Sch&uuml;lern der Klasse KF0F erstellt wurde.
+Sage ist eine internetgest&uuml;tzte Groupware, die - im Rahmen eines Schulprojekts der <a href="http://www.gso-koeln.de" target="_blank">Georg-Simon-Ohm-Schule K&ouml;ln</a> - von f&uuml;nf Sch&uuml;lern der Klasse KF0F erstellt wurde.
 Das Projektteam besteht aus:
 <ul>
     <li>Daniel Dietze</li>
