@@ -1,6 +1,6 @@
 <?php
 require_once("config.inc");
-require_once("db/mysql_class.php");
+require_once("../db/mysql_class.php");
 require_once("user.inc");
 
 // ------------------------------- //
@@ -24,12 +24,6 @@ dirname($_SERVER['PHP_SELF']) . "/" . $newUrl);
 
   header("Location: " . $newUrl);
   exit();
-}
-
-function handleMySQLError()
-{
-    $error = mysql_error();
-    echo "MySQL error: $error()";
 }
 
 function doLogin($username)

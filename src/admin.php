@@ -1,20 +1,20 @@
-<?PHP
+<?php
 /*Variablen Deklaration*/
 
 //Page-Name
 $PageName="SAGE";
 
 /*Der Header wird mit eingebunden*/
-require "headeradmin.inc";
+require "inc/headeradmin.inc";
 ?>
 
-<?PHP
+<?php
 /*Ab hier der Hauptteil*/
 ?>
 
 
 
-<?PHP
+<?php
 /*Der Rumpf wird mit eingebunden*/
-require "futteradmin.inc";
+require "inc/footeradmin.inc";
 ?>

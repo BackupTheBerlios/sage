@@ -1,13 +1,13 @@
 <?php
-require_once("functions.php");
+require_once("inc/functions.inc");
 
-$pagename = "inhalt...";
-require("header.inc");
+$pagename = "Inhalt";
+require("inc/header.inc");
 ?>
 
 
 
 
 <?php
-require("footer.inc");
+require("inc/footer.inc");
 ?>

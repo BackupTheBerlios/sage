@@ -1,13 +1,13 @@
 <?php
-require_once("functions.php");
+require_once("inc/functions.inc");
 
 $pagename = "Kalender";
-require("header.inc");
+require("inc/header.inc");
 ?>
 Noch nicht implementiert.
 
 
 
 <?php
-require("footer.inc");
+require("inc/footer.inc");
 ?>

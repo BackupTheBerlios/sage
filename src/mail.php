@@ -1,15 +1,15 @@
 <?php
-require_once("config.inc");
-require_once("functions.php");
+require_once("inc/config.inc");
+require_once("inc/functions.inc");
 
 
 $pagename = "Mail";
-require("header.inc");
+require("inc/header.inc");
 ?>
 
 
 
 
 <?php
-require("footer.inc");
+require("inc/footer.inc");
 ?>
