@@ -57,6 +57,16 @@ class User
 
     function insert()
     {
+        $dbq = new DB;
+        $dbq->db_connect();
+
+        $query = "INSERT INTO sage_user(loginname, password, firstname, surname, description, homepage, e_mail, user_id_parent)
+                  VALUES('$this->loginname', '$this->password', '$this->firstname', '$this->surname',
+                         '$this->description', '$this->homepage', '$this->e_mail', $this->user_id_parent)";
+
+        if (!$dbq->db_insert($query)) return false;
+
+        return $this->selectByName($this->loginname);
     }
 
     function initializeFromRow($row)
