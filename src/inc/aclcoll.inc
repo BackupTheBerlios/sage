@@ -18,7 +18,13 @@ class ACLList {
                   FROM sage_acl
                   WHERE user_id = $id";
         
-        $list = $dbq->db_select($query);
+        $acls = $dbq->db_select($query);
+        
+        for ($i = 0; $i < count($acls); $i++) {
+            $acl = new ACL;
+            $acl->initializeFromRow($acls[i]);
+            $list[] = $acl;
+        }
                       
         return true;
     }
@@ -34,7 +40,12 @@ class ACLList {
                   WHERE user_id = $id
                   AND path = '$path'";
         
-        $list = $dbq->db_select($query);
+        $acls = $dbq->db_select($query);
+        for ($i = 0; $i < count($acls); $i++) {
+            $acl = new ACL;
+            $acl->initializeFromRow($acls[i]);
+            $list[] = $acl;
+        }
                       
         return true;
     }

@@ -1,4 +1,6 @@
-require "mysql_class.inc";
+<?php
+
+require_once("mysql_class.inc");
 
 $linkRechteListe=array(
     "<div align=\"center\"><a href=\"test.php\">Notiz erstellen</a></div><br>",
@@ -34,3 +36,5 @@ for($b=0;$b<$zaeh;$b++){
     $zahl=$linkArray[$b];
     $linkArray[$b]=$linkRechteListe[$zahl];
 }
+
+?>

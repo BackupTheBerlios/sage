@@ -13,7 +13,7 @@
 <p> 
   
 </p>
-<p>&nbsp;</p>
+<p><img src="icons/logo_large.png" alt="Logo" /></p>
 <hr>
 <table width="100%" border="0" cellspacing="5" cellpadding="10" style="table-layout:fixed">
   <tr>  

@@ -1,6 +1,6 @@
 <?php
 require_once("config.inc");
-require_once("../db/mysql_class.php");
+require_once("mysql_class.inc");
 require_once("user.inc");
 
 // ------------------------------- //

@@ -1,21 +1,23 @@
 <?php
-require_once("db/mysql_class.php");
+require_once("mysql_class.inc");
 
 
 class User
 {
-    var $user_id = "";
-    var $loginname = "";
-    var $password = "";
-    var $firstname = "";
-    var $surname = "";
-    var $description = "";
-    var $homepage = "";
-    var $e_mail = "";
+    var $user_id        = "";
+    var $loginname      = "";
+    var $password       = "";
+    var $firstname      = "";
+    var $surname        = "";
+    var $description    = "";
+    var $homepage       = "";
+    var $e_mail         = "";
     var $user_id_parent = "";
+    var $acls           = 0;
  
     function User()
     {
+    }
         
     function selectByID($id)
     {
