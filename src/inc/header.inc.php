@@ -14,7 +14,6 @@ echo "<?xml version=\"1.0\"?>\n";
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
-<!--- <body bgcolor="#FFFFFF" text="#000000"> -->
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed">
     <tr>
@@ -28,6 +27,7 @@ echo "<?xml version=\"1.0\"?>\n";
             ?>
         </td>
     </tr>
+
 </table>
 
 <hr />

@@ -316,29 +316,30 @@ function confirmDelete()
     $me = $_SERVER["PHP_SELF"];
 
     echo("Folgende Dateien und Verzeichnisse l&ouml;schen?\n");
-    echo("<p />");
+
 
     echo("<form name=\"confirmDelete\" method=\"post\" action=\"$me\">");
     echo("<input type=\"hidden\" name=\"cmd\" value=\"dodelete\" />");
     $pathname = @$_REQUEST["pathname"];
     $filename = @$_REQUEST["filename"];
 
+    echo("<ul>");
+
     for ($i = 0; $i < count($pathname); $i++) {
         $name = $pathname[$i];
         echo("<input type=\"hidden\" name=\"pathname[]\" value=\"$name\" />");
-        echo("$name<br />\n");
+        echo("<li>$name</li>\n");
     }
 
     for ($i = 0; $i < count($filename); $i++) {
         $name = $filename[$i];
         echo("<input type=\"hidden\" name=\"filename[]\" value=\"$name\" />");
-        echo("$name<br />\n");
+        echo("<li>$name</li>\n");
     }
 
-    echo("<input type=\"submit\">Ja</input>\n");
-
+    echo("</ul>");
+    echo("<input type=\"submit\" name=\"Ja\"/>\n");
     echo("</form>");
-    echo("<p />");
 
     $me = $_SERVER["PHP_SELF"];
 
