@@ -1,3 +1,8 @@
+<?php
+require_once("inc/functions.inc.php");
+if (!loggedIn()) setupSession();
+?>
+
 <html>
 <head>
 <title><?php echo $PageName; ?></title>

@@ -5,7 +5,7 @@
 $PageName="SAGE";
 
 /*Der Header wird mit eingebunden*/
-require "inc/headeradmin.inc";
+require "inc/headeradmin.inc.php";
 ?>
 
 <?PHP
@@ -16,5 +16,5 @@ require "inc/headeradmin.inc";
 
 <?PHP
 /*Der Rumpf wird mit eingebunden*/
-require "inc/footeradmin.inc";
+require "inc/footeradmin.inc.php";
 ?>

@@ -46,9 +46,9 @@ CREATE TABLE sage_calendar (
    INDEX sage_calendar$initiator (initiator)
    )
    COMMENT = "Kalender eines jeden Users"
-   ; 
+   ;
 
--- erstelle sage_acl   
+-- erstelle sage_acl
 CREATE TABLE sage_acl (
    acl_id      INT          NOT NULL auto_increment,
    user_id     INT          NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE sage_address (
    )
    COMMENT = "Tabelle fuer verschiedene Adressdaten des Users"
    ;
-   
+
 -- erstelle sage_address_type
 CREATE TABLE sage_address_type (
    address_type_id   INT          NOT NULL auto_increment,
@@ -116,7 +116,7 @@ CREATE TABLE sage_address_type (
    )
    COMMENT = "Typ Tabelle fuer die verschiedenen Adresstypen"
    ;
-   
+
 -- erstelle sage_guest
 CREATE TABLE sage_guest (
    account_id        INT          NOT NULL auto_increment,
@@ -130,7 +130,7 @@ CREATE TABLE sage_guest (
    COMMENT = "Tabelle fuer eingeladene User"
    ;
 
--- erstelle sage_mailing_list 
+-- erstelle sage_mailing_list
 CREATE TABLE sage_mailing_list (
    mailing_list_id   INT            NOT NULL auto_increment,
    e_mail            VARCHAR(255)   NOT NULL,
@@ -138,8 +138,8 @@ CREATE TABLE sage_mailing_list (
    )
    COMMENT = "Tabelle zur Verwaltung von Mailinglisten"
    ;
-   
--- erstelle sage_mail_user_map 
+
+-- erstelle sage_mail_user_map
 CREATE TABLE sage_mail_user_map (
    user_id           INT            NOT NULL,
    mailing_list_id   INT            NOT NULL,
@@ -169,7 +169,7 @@ CREATE TABLE sage_files (
    )
    COMMENT = "Tabelle fuer die Zuordnung von Dateien zu Verzeichnissen auf dem Dateisystem"
    ;
-   
+
 -- erstelle sage_path
 CREATE TABLE sage_path (
    path_id           INT          NOT NULL auto_increment,
@@ -178,12 +178,14 @@ CREATE TABLE sage_path (
    description       VARCHAR(255) NOT NULL,
    insert_at         DATE         NOT NULL,
    modified_at       DATE         NULL,
+   path_id_parent    INT          NULL,
    PRIMARY KEY (path_id),
-   INDEX sage_path$loginname (loginname)
+   INDEX sage_path$loginname (loginname),
+   INDEX sage_path$path_id_parent (path_id_parent)
    )
    COMMENT = "Tabelle fuer die Zuordnung von Verzeichnissen zu Usern und zu deren Rechten an dem Verzeichnis"
    ;
-   
+
 -- fuegt die aktuelle Datenmodellversion ein
 insert into sage_dm_version (datamodel_version) values ('1.0.0-1');
 

@@ -13,9 +13,9 @@ insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (2
 insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (3,1,'0','1','1');
 insert into sage_acl (user_id,path_id,read_path,read_file,rename_path) values (3,3,'1','0','1');
 
-insert into sage_path (loginname,pathname,description,insert_at) values ('kf0fhomer','KF0F','Ordner der Klasse KF0F','4.4.2002');
-insert into sage_path (loginname,pathname,description,insert_at) values ('kf0fbart','KF04','Ordner der Klasse KF04','14.12.2001');
-insert into sage_path (loginname,pathname,description,insert_at) values ('kf0fhomer','AUSTAUSCH','Austauschordner fuer alle ','1.1.1999');
+insert into sage_path (loginname,pathname,description,insert_at, path_id_parent) values ('kf0fhomer','/KF0F','Ordner der Klasse KF0F','4.4.2002', NULL);
+insert into sage_path (loginname,pathname,description,insert_at, path_id_parent) values ('kf0fbart','/KF04','Ordner der Klasse KF04','14.12.2001', NULL);
+insert into sage_path (loginname,pathname,description,insert_at, path_id_parent) values ('kf0fhomer','/AUSTAUSCH','Austauschordner fuer alle ','1.1.1999', NULL);
 
 insert into sage_user_calendar_map (user_id,calendar_id) values (1,1);
 insert into sage_user_calendar_map (user_id,calendar_id) values (1,3);
