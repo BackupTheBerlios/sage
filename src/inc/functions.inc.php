@@ -64,4 +64,57 @@ function doLogout()
 
 }
 
+function getFileExtension($filename)
+{
+    $parts = explode(".", $filename);
+     // .tar.gz .tar.bz2
+    if (count($parts) == 3) {
+        return $parts[1].".".$parts[2];
+    } else if (count($parts) == 2) {
+        return $parts[1];
+    } else {
+        return "";
+    }
+}
+
+
+function getFileType($fspath)
+{
+    $bname = basename($fspath);
+    $ext = getFileExtension($bname);
+
+    $filetypes["pdf"] = "application/pdf";
+    $filetypes["rtf"] = "application/rtf";
+    $filetypes["doc"] = "application/msword";
+    $filetypes["xls"] = "application/msexcel";
+    $filetypes["ppt"] = "application/ms-powerpoint";
+    $filetypes["rm"]  = "audio/x-pn-realaudio";
+    $filetypes["ram"] = "audio/x-pn-realaudio";
+    $filetypes["txt"] = "text/plain";
+    $filetypes["zip"] = "application/zip";
+
+    $retval = $filetypes[$ext];
+    if ($retval == "") $retval = "application/force-download";
+
+    return $retval;
+}
+
+function getFileIcon($fspath)
+{
+    $bname = basename($fspath);
+    $ext = getFileExtension($bname);
+
+    $filetypes["pdf"] = "ps.gif";
+    $filetypes["rtf"] = "text.gif";
+    $filetypes["doc"] = "doc.gif";
+    $filetypes["txt"] = "text.gif";
+    $filetypes["tar"] = "tar.gif";
+    $filetypes["zip"] = "binhex.gif";
+
+    $retval = $filetypes[$ext];
+    if ($retval == "") $retval = "unknown.gif";
+
+    return $retval;
+}
+
 ?>

@@ -15,22 +15,25 @@ function printHeader()
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed">
     <tr>
         <td colspan="5" nowrap="nowrap" valign="top">
-            <a href="$me?cmd=upload">Datei hochladen</a>
-            <input type="submit" value="Datei l&ouml;schen" />
+            <select name="cmd">
+                <option value="upload">Datei hochladen</a>
+                <option value="delete">Datei l&ouml;schen</a>
+            </select>
+            <input type="submit" value="Los" />
         </td>
     </tr>
     <tr>
         <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
-            X
+            Auswahl
         </td>
         <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
             Name
         </td>
         <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
-            Besitzer
+            Beschreibung
         </td>
         <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
-            Beschreibung
+            Besitzer
         </td>
         <td bgcolor="#CCCCCC" nowrap="nowrap" valign="top">
             erstellt am
@@ -42,13 +45,16 @@ EOF;
 function printDirectoryEntry(&$path, $isFile)
 {
     if ($isFile) {
+        $icon = getFileIcon($path->filename);
+
         $me = $_SERVER["PHP_SELF"];
         echo("<tr>");
-        echo("<td><input type=\"checkbox\" name=\"filename\" value=\"$path->filename\" />");
-        echo("<td><img src=\"icons/binary.gif\" alt=\"[file]\" />");
-        echo("<a href=\"$me?cmd=open&path=$path->filename\">$path->filename</a></td>\n");
-        echo("<td>$path->loginname</td>");
+        echo("<td><input type=\"checkbox\" name=\"filename[]\" value=\"$path->filename\" />");
+        echo("<td><img src=\"icons/$icon\" alt=\"[file]\" />");
+        echo("<a href=\"$me?cmd=open&filename=$path->filename\">$path->filename</a></td>\n");
+        //echo("<a href=\"path=$path->filename\">$path->filename</a></td>\n");
         echo("<td>$path->description</td>");
+        echo("<td>$path->loginname</td>");
         echo("<td>$path->insert_at</td>");
         echo("</tr>");
 
@@ -56,12 +62,12 @@ function printDirectoryEntry(&$path, $isFile)
     } else {
         $me = $_SERVER["PHP_SELF"];
         echo ("<tr>");
-        echo("<td><input type=\"checkbox\" name=\"pathname\" value=\"$path->pathname\" />");
+        echo("<td><input type=\"checkbox\" name=\"pathname[]\" value=\"$path->pathname\" />");
         echo("<td><img src=\"icons/dir.gif\" alt=\"[dir]\" />");
 
         echo("<a href=\"$me?cmd=ls&path=$path->pathname\">$path->pathname</a></td>\n");
-        echo("<td>$path->loginname</td>");
         echo("<td>$path->description</td>");
+        echo("<td>$path->loginname</td>");
         echo("<td>$path->insert_at</td>");
         echo("</tr>");
     }
@@ -216,6 +222,50 @@ function doUpload()
         die();
     }
 }
+
+function openFile()
+{
+    global $sage_data_dir;
+
+    $filename = $_REQUEST["filename"];
+    if ($path = "") return false;
+
+    $fspath = $sage_data_dir.$_SESSION["path"]."/".$filename;
+    if (!file_exists($fspath)) return false;
+
+    $filesize = filesize($fspath);
+    $mime = getFileType($fspath);
+
+    header("Content-Type: $mime");
+    header("Content-Disposition: attachment; filename=$filename");
+    //header("Content-Length: $filesize ");
+    readfile($fspath);
+}
+
+function confirmDelete()
+{
+    echo("Folgende Dateien und Verzeichnisse l&ouml;schen?\n");
+    echo("<p />");
+
+    $pathname = @$_REQUEST["pathname"];
+    $filename = @$_REQUEST["filename"];
+
+    for ($i = 0; $i < count($pathname); $i++) {
+        $name = $pathname[$i];
+        echo ("$name<br />\n");
+    }
+
+    for ($i = 0; $i < count($filename); $i++) {
+        $name = $filename[$i];
+        echo ("$name<br />\n");
+    }
+
+    echo ("<p />");
+
+    $me = $_SERVER["PHP_SELF"];
+
+    //echo ("<a href=\"$me?cmd=dodelete\"
+}
 ?>
 
 <?php
@@ -236,6 +286,12 @@ if ($command == "ls") {
     printUploadFile();
 } else if ($command == "doupload") {
     doUpload();
+} else if ($command == "delete") {
+    confirmDelete();
+} else if ($command == "open") {
+    openFile();
+} else {
+    listCurrentPath();
 }
 
 ?>
