@@ -1,17 +1,17 @@
 <?php
 require_once("mysql_class.inc.php");
-require_once("mysql_class.inc.php");
+require_once("path_impl.inc.php");
 
 
 class ModuleList {
     var $list = 0;
 
-    function PathList()
+    function ModuleList()
     {
         $this->list = array();
     }
 
-    function selectAll($id)
+    function selectAll()
     {
         $dbq = new DB;
         $dbq->db_connect();
