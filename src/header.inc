@@ -1,11 +1,11 @@
-<?PHP
+<?php
 //Dies Stellt den Header dar !!
 ?>
 
 
 <html>
 <head>
-<title><?PHP echo $PageName; ?></title>
+<title><?php echo $PageName; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
