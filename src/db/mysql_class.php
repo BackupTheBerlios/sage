@@ -21,23 +21,22 @@ class DB
    function db_close()
    {
       $close = mysql_close($this->conn_id);
+      $return true;
    }
    
    // fuehr die Abfragen aus
    // rueckgabewert ist ein Array von Objekten
    function db_select($select){ 
-      $i=0; 
       
       // dient nur debug zwecken
       echo $select."<br><br>";
-      
+
+      if(!$this->conn_id) $this->conn_id = $this->db_connect();
       $result = mysql_query("$select", $this->conn_id); 
       while ($row = mysql_fetch_object($result)){ 
-         $rueck[$i]=$row; 
-         $i++; 
+         $rueck[]=$row; 
       }
       return $rueck; 
-} 
-      
+   } 
 }
 ?>
