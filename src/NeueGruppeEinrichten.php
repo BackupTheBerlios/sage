@@ -21,20 +21,20 @@ echo"
 
 		<table border='0'>
 			<tr>
-				<td width='240'>
+				<td>
 				Alle Rechte:
 				</td>
 
 				<td>
 				</td>
 
-				<td width='240'>
+				<td>
 				Ausgewählte Rechte:
 				</td>
 			</tr>
 
 			<tr>
-				<td width='240'>
+				<td>
 ";
 
 				links();
@@ -48,7 +48,7 @@ echo"
 				<input type='submit' name='RechtsLinks' value='<<'>
 				</td>
 
-				<td width='240'>
+				<td>
 ";
 
 				rechts($LinksRechts, $RechtsLinks);
