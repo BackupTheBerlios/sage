@@ -19,7 +19,7 @@ else {                        // Gruppen gefunden
     echo "<tr><td>Benutzer-Name:</td><td><input type=\"text\" name=\"username\" size=\"30\" maxlength=\"30\" /></td></tr>\n";
     echo "<tr><td>Passwort:</td><td><input type=\"password\" name=\"passwd1\" size=\"8\" maxlength=\"8\" /></td></tr>\n";
     echo "<tr><td>Passwort wdh.:</td><td><input type=\"password\" name=\"passwd2\" size=\"8\" maxlength=\"8\" /></td></tr>\n";
-    echo "<tr><td>Gruppe:</td><td><select name=\"gruppe\" size=\"1\">";
+    echo "<tr><td>Gruppe:</td><td><select name=\"groupname\" size=\"1\">";
     for ($i=0;$i<sizeof($fc_htgroup);$i++){   // Gruppen einlesen
 	$fc_htgroup[$i] = ereg_replace("#.*","",trim($fc_htgroup[$i]));
         if ($fc_htgroup[$i] == "") continue;
@@ -30,6 +30,7 @@ else {                        // Gruppen gefunden
     echo "<tr><td>Vorname:</td><td><input type=\"text\" name=\"vorname\" size=\"30\" maxlength=\"30\" /></td></tr>\n";
     echo "<tr><td>Nachname:</td><td><input type=\"text\" name=\"nachname\" size=\"30\" maxlength=\"30\" /></td></tr>\n";
     echo "<tr><td>E-Mail:</td><td><input type=\"text\" name=\"email\" size=\"30\" maxlength=\"255\" /><input type=\"hidden\" name=\"check\" value=\"1\" /></td></tr>\n";  // TODO: was ist die maximale laenge (rfc)?
+    echo "<tr><td colspan=\"2\"><input type=\"checkbox\" name=\"admin\" value=\"true\" /> Administrator</td></tr>\n";
     echo "<tr><td><input type=\"submit\" value=\"Benutzer hinzuf&uuml;gen\"></td>\n";
     echo "<td style=\"text-align:right\"><input type=\"reset\" value=\"Abbrechen\" />\n";
     echo "</td></tr>\n";
@@ -77,7 +78,7 @@ else {                        // Gruppen gefunden
                 $f_htgroup=fopen($htgroup,"w+");
                 for ($i=0;$i<sizeof($fc_htgroup);$i++){
                     $eintragen=explode(" ",$fc_htgroup[$i]);
-                    if (trim($eintragen[0])=="$gruppe:"){  // Benutzer-Name zu Gruppe
+                    if (trim($eintragen[0])=="$groupname:"){  // Benutzer-Name zu Gruppe
                         $zeile=trim($fc_htgroup[$i])." ".$username; // hinzufuegen
                     } else {
                         $zeile=trim($fc_htgroup[$i]);
@@ -86,10 +87,45 @@ else {                        // Gruppen gefunden
                 }
                 fclose($f_htgroup);
 
-                // TODO: Hier Funktion um Benutzer in Datenbank einzutragen
-                //       einfuegen.
-
-                echo "Benutzer hinzugef&uuml;gt.\n";
+                $user = new User;
+                $user->loginname=$username;
+		$group = new User;
+		$group->selectByName($groupname);
+                $user->user_id_parent=$group->user_id;
+                if ($user->insert()) {
+		    $acl = new ACL;
+		    $acl->user_id=$user->user_id;
+		    $acl->path_id=$group->path_id;
+		    if (isset($_POST["admin"]) && ($_POST["admin"] == "true")) {
+			$acl->$delete_path = 1;
+			$acl->$write_path  = 1;
+			$acl->$read_path   = 1;
+			$acl->$rename_path = 1;
+		    } else {
+			$acl->$delete_path = 0;
+			$acl->$write_path  = 0;
+			$acl->$read_path   = 0;
+			$acl->$rename_path = 0;
+		    }
+		    $acl->$delete_file = 1;
+		    $acl->$write_file  = 1;
+		    $acl->$read_file   = 1;
+		    $acl->$rename_file = 1;
+		    $modacl = new ACL;
+		    $modacl->user_id=$user->user_id;
+		    foreach (array("BROWSER", "CALENDAR", "HILFE", "MAIL") as $modulename) {
+			$modpath->selectByName($modulename);
+			$modacl->path_id=$modpath->path_id;
+			$modacl->delete_path=1;
+			if ($modacl->insert()) {
+			    echo "Benutzer hinzugef&uuml;gt.\n";
+			} else {
+			    echo "Fehler bei Modul ".$modulename.".";
+			}
+		    } // end foreach
+                } else {
+                    echo "Fehler bei INSERT.";
+                }
             }
             else echo "Benutzer-Name existiert bereits.\n";
         }
