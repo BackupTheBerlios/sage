@@ -1,8 +1,9 @@
 <?php
-require_once("inc/functions.inc");
+require_once("inc/functions.inc.php");
 
 $PageName = "Kalender";
-require("inc/header.inc");
+require_once("inc/header.inc.php");
+require_once("inc/leftnav.inc.php");
 ?>
 
 <?php
@@ -38,5 +39,5 @@ else
 
 ?>
 <?php
-require("inc/footer.inc");
+require("inc/footer.inc.php");
 ?>

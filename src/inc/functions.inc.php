@@ -111,7 +111,7 @@ function getFileIcon($fspath)
     $filetypes["tar"] = "tar.gif";
     $filetypes["zip"] = "binhex.gif";
 
-    $retval = $filetypes[$ext];
+    $retval = @$filetypes[$ext];
     if ($retval == "") $retval = "unknown.gif";
 
     return $retval;
