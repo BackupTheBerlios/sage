@@ -1,0 +1,15 @@
+Zum Betrieb von Sage ist die Einrichtung einiger Verzeichnisse zu beachten.
+
+Folgende Verzeichnisse muessen vorhanden sein:
+
+o ein Verzeichnis fuer Skriptdateien
+
+o ein Verzechnis fuer Datendateien und Klassenordner
+  - fuer Apache erreichbar
+  - htaccess geschuetzt
+  - restriktive Rechte auch auf Dateisystem-Ebene
+
+o ein absolutes Verzeichnis fuer hochgeladene Dateien
+  - hier werden die von den Benutzern hochgeladene Dateien abgelegt
+  - auf diese Verzeichnis verweist eine relative URL
+
