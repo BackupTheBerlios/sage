@@ -4,7 +4,7 @@
       <div align="center"><u>Menü</u></div><br>
 
       <?php
-           require_once "inc/verzeichniss.inc.php";
+           require_once "inc/verzeichnis.inc.php";
            $obergrenze=count($linkArray);
            for($a=0;$a<$obergrenze;$a++)
                echo "$linkArray[$a]";
