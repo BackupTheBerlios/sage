@@ -29,7 +29,7 @@
 			echo("</font>");
       ?>
 
-
+      <div align="center"><a href="profile.php" style="color: #CAA778;">Benutzerprofil</a></div><br />
       <div align="center"><a href="index.php" style="color: #CAA778;">Home</a></div><br />
     </td>
     <!--- <td nowrap="nowrap" style="width:80%" valign="top"> -->

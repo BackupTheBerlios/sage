@@ -59,7 +59,7 @@ class Path
                          '$this->description', $this->insert_at, $this->modified_at, $this->path_id_parent)";
 
         if (!$dbq->db_insert($query)) return false;
-        return selectByName($this->pathname);
+        return $this->selectByName($this->pathname);
     }
 
     function initializeFromRow($row)

@@ -9,19 +9,7 @@ require_once("inc/fehlerausgabe.inc.php");
 function printHeader($path)
 {
     $me = $_SERVER["PHP_SELF"];
-    $parname = "";
-
-    echo ("Verzeichnis: ".$path->pathname."<br />\n");
-    $parent = new Path;
-    if ($path->path_id_parent != NULL) {
-        if ($parent->selectById($path->path_id_parent)) {
-            $parname = $parent->pathname;
-        }
-    }
-    if ($parname != "") {
-        echo("<a href=\"$me?cmd=ls&amp;path=$parname\">Eine Ebene h&ouml;her</a>");
-    }
-
+    echo ("Aktuelles Verzeichnis: ".$path->pathname."<br />\n");
 
     echo <<<EOF
 <form name="Browser" action="$me" method="post">
@@ -29,7 +17,7 @@ function printHeader($path)
     <tr>
         <td colspan="4" nowrap="nowrap" valign="top">
             <select name="cmd">
-                <option value="upload">Datei erstellen</option>
+                <option value="upload">Datei hochladen</option>
                 <option value="mkdir">Verzeichnis erstellen</option>
                 <option value="delete">L&ouml;schen</option>
             </select>
@@ -54,6 +42,29 @@ function printHeader($path)
         </td>
     </tr>
 EOF;
+
+    $parname = "";
+
+    $parent = new Path;
+    if ($path->path_id_parent != NULL) {
+        if ($parent->selectById($path->path_id_parent)) {
+            $parname = $parent->pathname;
+        }
+    }
+    if ($parname != "") {
+        echo <<<EOF
+<tr>
+    <td>
+        <img src="icons/back.gif" alt="[parent]" />
+        <a href="$me?cmd=ls&amp;path=$parname">..</a></td>
+    </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+EOF;
+    }
+
 }
 
 function printDirectoryEntry(&$path, $isFile)
@@ -102,7 +113,7 @@ function listCurrentPath()
     $path = new Path;
     if (!$path->selectByName($_SESSION["path"])) {
         fehlerausgabe("Verzeichnis existiert nicht!");
-        die();
+        return false;
     }
 
     // ACL für das Verzeichnis holen
@@ -110,7 +121,7 @@ function listCurrentPath()
     $acl = $_SESSION["user"]->getACLByPath($path->pathname);
     if ($acl->read_path != "1") {
         fehlerausgabe("Zugriff auf $path->pathname verweigert");
-        die();
+        return false;
     }
 
     printHeader($path);
@@ -255,27 +266,27 @@ function doUpload()
 
     if (strstr($filename, "/") || strstr($filename, "\\")) {
         fehlerausgabe("Kann $newname nicht anlegen: Ung&uuml;ltiger Name");
-        die();
+        return false;
     }
 */
     //  Verzeichniseintrag holen
     $path = new Path;
     if (!$path->selectByName($_SESSION["path"])) {
         fehlerausgabe("Kann nicht hochladen: Verzeichnis existiert nicht");
-        die();
+        return false;
     }
 
     // ACL für das Verzeichnis holen
     $acl = $_SESSION["user"]->getACLByPath($path->pathname);
     if ($acl->write_path != "1") {
         fehlerausgabe("Kann nicht hochladen: Zugriff verweigert");
-        die();
+        return false;
     }
 
     $file = new File;
     if ($file->selectByPathIDAndName($path->path_id, $filename)) {
         fehlerausgabe("Kann nicht hochladen: Datei existiert schon");
-        die();
+        return false;
     }
 
     $file->path_id = $path->path_id;
@@ -289,7 +300,7 @@ function doUpload()
         redirectTo($_SERVER["PHP_SELF"]."?cmd=ls");
     } else {
         fehlerausgabe("Kann nicht hochladen: Einf&uumlgen in Datenbank fehlgeschlagen");
-        die();
+        return false;
     }
 }
 
@@ -316,13 +327,18 @@ function confirmDelete()
 {
     $me = $_SERVER["PHP_SELF"];
 
+    $pathname = @$_REQUEST["pathname"];
+    $filename = @$_REQUEST["filename"];
+
+    if (0 == count($pathname) && 0 == count($filename)) {
+        redirectTo($me);
+    }
+
     echo("Diese Dateien und Verzeichnisse wirklich l&ouml;schen?\n");
 
 
     echo("<form name=\"confirmDelete\" method=\"post\" action=\"$me\">");
     echo("<input type=\"hidden\" name=\"cmd\" value=\"dodelete\" />");
-    $pathname = @$_REQUEST["pathname"];
-    $filename = @$_REQUEST["filename"];
 
     echo("<ul>");
 
@@ -357,14 +373,14 @@ function doDelete()
     $path = new Path;
     if (!$path->selectByName($_SESSION["path"])) {
         fehlerausgabe("Kann nicht löschen: Verzeichnis existiert nicht");
-        die();
+        return false;;
     }
 
     // ACL für das Verzeichnis holen
     $acl = $_SESSION["user"]->getACLByPath($path->pathname);
     if ($acl->delete_file != "1") {
         fehlerausgabe("Kann in $path->pathname nicht löschen: Zugriff verweigert");
-        die();
+        return false;
     }
 
     $db = new DB;
@@ -390,25 +406,31 @@ function doDelete()
 
         if ($acl->delete_path != "1") {
             fehlerausgabe("Kann $pathname[$i] nicht löschen: Zugriff verweigert");
-            break;
+            return false;
         }
 
         $query = "SELECT * FROM sage_path WHERE path_id_parent = $path->path_id";
         $childdir = $db->db_select($query);
         if (count($childdir) != 0)  {
             fehlerausgabe("Kann $pathname[$i] nicht löschen: Verzeichnis nicht leer");
-            break;
+            return false;
+        }
+        $query = "SELECT * FROM sage_files WHERE path_id = $path->path_id";
+        $childdir = $db->db_select($query);
+        if (count($childdir) != 0)  {
+            fehlerausgabe("Kann $pathname[$i] nicht löschen: Verzeichnis nicht leer");
+            return false;
         }
 
         $query = "DELETE FROM sage_path WHERE path_id = $path->path_id";
         if (!$db->db_delete($query)) {
             fehlerausgabe("Kann $pathname[$i] nicht löschen: Datenbankabfrage fehlgeschlagen");
-            break;
+            return false;
         }
 
         if (!rmdir($sage_data_dir.$pathname[$i])) {
             fehlerausgabe("Kann $pathname[$i] nicht löschen: Dateisystem weigert sich");
-            break;
+            return false;
         }
     }
 
@@ -425,7 +447,7 @@ function doMkDir()
 
     if (strstr($newname, "/") || strstr($newname, "\\")) {
         fehlerausgabe("Kann $newname nicht anlegen: Ung&uuml;ltiger Name");
-        die();
+        return false;
     }
 
 
@@ -433,7 +455,7 @@ function doMkDir()
 
     if ($path->selectByName($newname)) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Ordner existiert schon");
-        die();
+        return false;
     }
 
     $path->loginname        = $_SESSION["user"]->loginname;
@@ -445,13 +467,13 @@ function doMkDir()
     $curpath = new Path;
     if (!$curpath->selectByName($_SESSION["path"])) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann Parent-Pfad nicht finden");
-        die();
+        return false;
     }
 
     $path->path_id_parent   = $curpath->path_id;
     if (!$path->insert()) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann Pfad nicht in DB schreiben");
-        die();
+        return false;
     }
 
     $path->selectByName($_SESSION["path"]."/".$newname);
@@ -465,12 +487,12 @@ function doMkDir()
     $acllist = new ACLList;
     if (!$acllist->selectByUserIDAndPath($acluserid, $_SESSION["path"])) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Fehler beim Selektieren der Parent-ACL");
-        die();
+        return false;
     }
 
     if (count($acllist) < 1) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann Parent-ACL nicht finden");
-        die();
+        return false;
     }
 
     $acl = $acllist->list[0];
@@ -479,7 +501,7 @@ function doMkDir()
 
     if (!$acl->insert()) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Kann nicht einfügen");
-        die();
+        return false;
     }
 
 //fs
@@ -487,7 +509,7 @@ function doMkDir()
     umask(077);
     if (!mkdir($sage_data_dir.$path->pathname, 0700)) {
         fehlerausgabe("Kann Ordner $newname nicht anlegen: Dateisystem weigert sich");
-        die();
+        return false;
     }
     umask($oldumask);
 

@@ -1,5 +1,5 @@
 <?php
-$sage_version = "0.7.0";
+$sage_version = "0.7.3-cvs";
 
 $sage_data_dir = "/data/sage";
 
