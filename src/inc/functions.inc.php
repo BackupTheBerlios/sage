@@ -53,9 +53,15 @@ function loggedIn()
 
 function doLogout()
 {
+    Header( "WWW-authenticate: Basic realm=\"Bitte \"Abbrechen\" drücken\"");
+    Header( "HTTP/1.0 401 Unauthorized");
+
     session_start();
     unset($_SESSION["user"]);
-    unset($_SESSION["pass"]);
+    //unset($_SESSION["pass"]);
+    session_destroy();
+    
+
 }
 
 ?>

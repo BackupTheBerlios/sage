@@ -25,14 +25,9 @@ function printHeader()
 EOF;
 }
 
-
-
-
 function printDirectoryEntry(&$path, $isFile)
 {
     if ($isFile) {
-
-
 
 
     } else {
@@ -53,54 +48,61 @@ function printFooter()
     echo ("</table>");
 }
 
+function listCurrentPath()
+{
+    $_SESSION["path"] = $_REQUEST["path"];
+
+    if (!isset($_SESSION["path"])) {
+        $_SESSION["path"] = "/";
+    }
+
+    //  Verzeichniseintrag holen
+    $path = new Path;
+    if (!$path->selectByName($_SESSION["path"])) {
+        fehlerausgabe("Verzeichnis existiert nicht!");
+        die();
+    }
+
+    echo ("Verzeichnis: ".$path->pathname."<p />");
+
+    // ACL für das Verzeichnis holen
+    //$user = $_SESSION["user"];
+    $acl = $_SESSION["user"]->getACLByPath($path->pathname);
+    if ($acl->read_path != "1") {
+        fehlerausgabe("Zugriff auf $path->pathname verweigert");
+        die();
+    }
+
+    printHeader();
+
+    // Verzeichnisse listen
+    $parent = new Path;
+    if ($path->path_id_parent != NULL) {
+        if ($parent->selectById($path->path_id_parent)) {
+            printDirectoryEntry($parent, false);
+        }
+    }
+
+    $pathlist = new PathList;
+    $pathlist->selectByParentId($path->path_id);
+    for ($i = 0; $i < count($pathlist->list); $i++) {
+        $acl = $_SESSION["user"]->getACLByPath($pathlist->list[$i]->pathname);
+        if ($acl->read_path) {
+            printDirectoryEntry($pathlist->list[$i], false);
+        }
+    }
+    printFooter();
+}
+?>
+
+<?php
 $PageName = "Browser";
 require("inc/header.inc.php");
 require("inc/leftnav.inc.php");
 
+listCurrentPath();
 
 
-$_SESSION["path"] = $_REQUEST["path"];
-
-if (!isset($_SESSION["path"])) {
-    $_SESSION["path"] = "/";
-}
-
-//  Verzeichniseintrag holen
-$path = new Path;
-if (!$path->selectByName($_SESSION["path"])) {
-    fehlerausgabe("Verzeichnis existiert nicht!");
-    die();
-}
-
-echo ("Verzeichnis: ".$path->pathname."<p />");
-
-// ACL für das Verzeichnis holen
-$user = $_SESSION["user"];
-$acl = $user->getACLByPath($path->pathname);
-if ($acl->read_path != "1") {
-    fehlerausgabe("Zugriff auf $path->pathname verweigert");
-    die();
-}
-
-printHeader();
-// Verzeichnisse listen
-$parent = new Path;
-if ($path->path_id_parent != NULL) {
-    if ($parent->selectById($path->path_id_parent)) {
-        printDirectoryEntry($parent, false);
-    }
-}
-
-$pathlist = new PathList;
-$pathlist->selectByParentId($path->path_id);
-for ($i = 0; $i < count($pathlist->list); $i++) {
-    $acl = $_SESSION["user"]->getACLByPath($pathlist->list[$i]->pathname);
-    if ($acl->read_path) {
-        $currentPath = $pathlist->list[$i];
-        printDirectoryEntry($currentPath, false);
-    }
-}
-printFooter();
 ?>
 
 

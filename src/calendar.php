@@ -3,6 +3,7 @@ require_once("inc/functions.inc.php");
 
 $pagename = "Inhalt";
 require("inc/header.inc.php");
+require("inc/leftnav.inc.php");
 ?>
 
 <?php
