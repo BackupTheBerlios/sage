@@ -17,13 +17,6 @@ class User
     function User()
     {
         
-    }
- /*
-    function User($row)
-    {
-        initializeFromRow($row);   
-    }
-   */ 
     function selectByID($id)
     {
         $dbq = new DB;
@@ -36,7 +29,7 @@ class User
         $result = $dbq->db_select($query);
         if (count($result) != 1) return false;
      
-        initializeFromRow($result);   
+        initializeFromRow($result[0]);   
                 
         return true;
     }
@@ -61,15 +54,15 @@ class User
     
     function initializeFromRow($row)
     {
-        $this->user_id = $row->user_id;
-        $this->loginname = $row->loginname;
-        $this->password = $row->password;
-        $this->firstname = $row->firstname;
-        $this->surname = $row->surname;
-        $this->description = $row->description;
-        $this->homepage = $row->homepage;
-        $this->email = $row->email;
-        $this->user_id_parent = $row->user_id_parent;
+        $this->user_id          = $row->user_id;
+        $this->loginname        = $row->loginname;
+        $this->password         = $row->password;
+        $this->firstname        = $row->firstname;
+        $this->surname          = $row->surname;
+        $this->description      = $row->description;
+        $this->homepage         = $row->homepage;
+        $this->email            = $row->email;
+        $this->user_id_parent   = $row->user_id_parent;
     }
 }
 ?>
